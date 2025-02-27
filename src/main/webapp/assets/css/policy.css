@@ -233,6 +233,9 @@ ul.nav-list {
 		font-size: 24px;
 		margin-bottom: 20px;
 	}
+    .terms-tabs{
+        overflow-x: auto;
+    }
 	.terms-tabs .nav-link {
 		padding: 10px 15px;
 		font-size: 14px;
