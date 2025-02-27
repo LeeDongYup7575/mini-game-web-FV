@@ -132,7 +132,7 @@
        			
             	<div class="title-input">
             	<h4> 제목 </h4>
-            	<input type="text" id="title" name="title" placeholder="제목을 입력하세요" required>
+            	<input type="text" id="title" name="title" placeholder="제목을 입력하세요" required maxlength="50">
    
              	<!-- 첨부 파일 목록 표시 -->
             	<div class="file-list">

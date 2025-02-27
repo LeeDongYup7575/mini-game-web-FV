@@ -66,7 +66,7 @@
 
             <form id="writeForm" action="/write.board" method="post" enctype="multipart/form-data">
                 <div class="title-input">
-                    <input type="text" name="title" placeholder="제목을 입력해주세요" required>
+                    <input type="text" name="title" placeholder="제목을 입력해주세요" required maxlength="50">
                 </div>
 	
 				<input type="file" name="file1">   	

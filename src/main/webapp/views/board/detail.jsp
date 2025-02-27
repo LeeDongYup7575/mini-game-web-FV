@@ -107,7 +107,7 @@
 		let replyInbox = $("<div>").addClass("reply-inbox sub-reply-inbox");
 		
 		let replyInboxName = $("<p>").addClass("reply-inbox-name").html("${nickname}");
-		let replyInboxText = $("<textarea>").addClass("reply-inbox-text").attr({name: "contents"});
+		let replyInboxText = $("<textarea>").addClass("reply-inbox-text").attr({name: "contents", maxlength: 200});
 		
 		let replyBtns = $("<div>").addClass("reply-btns");		
 		let replyCancelBtn = $("<button>").addClass("reply-cancel-btn").attr("id", "replyCancelBtn").html("취소");
@@ -129,6 +129,11 @@
 		
 		// 답글달기
 		replySaveBtn.on("click", function(){	
+			if(replyInboxText.val().trim() == ""){
+				alert("답글 내용을 입력해주세요.");
+				return;
+			}
+			
 			let contents = replyInboxText.val();
 			let parentReplySeq = replyLi.find(".reply").attr("id");
 			
@@ -181,7 +186,7 @@
 		let replyInbox = $("<div>").addClass("reply-inbox update-reply-inbox");
 		
 		let replyInboxName = $("<p>").addClass("reply-inbox-name").html("${nickname}");
-		let replyInboxText = $("<textarea>").addClass("reply-inbox-text").attr({name: "contents"}).html(currentContents);
+		let replyInboxText = $("<textarea>").addClass("reply-inbox-text").attr({name: "contents", maxlength: 200}).html(currentContents);
 		
 		let replyBtns = $("<div>").addClass("reply-btns");		
 		let replyCancelBtn = $("<button>").addClass("reply-cancel-btn").attr("id", "replyCancelBtn").html("취소");
@@ -203,6 +208,11 @@
 		
 		// 댓글 수정 완료 버튼 클릭 이벤트
 		replySaveBtn.on("click", function(){
+			if($(this).closest(".reply").find(".reply-inbox-text").val().trim() == ""){
+				alert("답글 내용을 입력해주세요.");
+				return;
+			}
+			
 			if(!confirm("수정을 완료하시겠습니까?")){
 				return false;
 			};
@@ -409,7 +419,7 @@
                 <form action="/add.reply" method="post">
                 <div class="reply-inbox">
                     <p class="reply-inbox-name">${nickname}</p>
-                    <textarea class="reply-inbox-text" name="contents" id="replyInboxText" placeholder="댓글을 작성해주세요."></textarea>
+                    <textarea class="reply-inbox-text" name="contents" id="replyInboxText" placeholder="댓글을 작성해주세요." required maxlength="200"></textarea>
                     <div class="reply-btns">
                     	<button class="reply-resister-btn" id="replyResisterBtn">등록</button>
                     </div>
