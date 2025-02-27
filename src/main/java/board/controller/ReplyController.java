@@ -8,9 +8,11 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.google.gson.Gson;
 
+import auth.dto.UsersDTO;
 import board.dao.ReplyDAO;
 import board.dto.ReplyDTO;
 
@@ -18,7 +20,6 @@ import board.dto.ReplyDTO;
 public class ReplyController extends HttpServlet {
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
 		request.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html; charset=UTF-8");
 		
@@ -70,6 +71,10 @@ public class ReplyController extends HttpServlet {
 				System.out.println();
 			} 
 		} catch(Exception e) {
+			if (!"POST".equalsIgnoreCase(request.getMethod())) {
+                response.sendRedirect("/403.error");
+                return;
+            }
 			e.printStackTrace();
 		}
 

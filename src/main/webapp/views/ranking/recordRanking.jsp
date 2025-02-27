@@ -12,7 +12,7 @@
 <title>Ranking Board</title>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <link rel="stylesheet" href="/assets/css/layout.css">
-<link rel="stylesheet" href="/assets/css/reset.css">
+<!-- <link rel="stylesheet" href="/assets/css/reset.css"> -->
 <link rel="stylesheet" href="/assets/css/rankingGameRecord.css">
 
 </head>
@@ -21,12 +21,12 @@
 
 	<section>
 		<div class="tabs">
-			<button onclick="loadRanking(4001)">Barbecue Game</button>
-			<button onclick="loadRanking(4002)">Rhythm Game</button>
-			<button onclick="loadRanking(4003)">Zombie Crusher</button>
-			<button onclick="loadRanking(4004)">스네이크 게임</button>
-			<button onclick="loadRanking(4005)">크로스 로드</button>
-			<button onclick="loadRanking(4006)">참참참!</button>
+			<button id="4001" onclick="loadRanking(4001)">Barbecue Game</button>
+			<button id="4002" onclick="loadRanking(4002)">Rhythm Game</button>
+			<button id="4003" onclick="loadRanking(4003)">Zombie Crusher</button>
+			<button id="4004" onclick="loadRanking(4004)">스네이크 게임</button>
+			<button id="4005" onclick="loadRanking(4005)">크로스 로드</button>
+			<button id="4006" onclick="loadRanking(4006)">참참참!</button>
 		</div>
 
 		<div class="leaderboard-container">
@@ -50,6 +50,8 @@
 			loadRanking(4001);
 		})
 		function loadRanking(gameId) {
+		    $(".tabs button").css({"background-color":"#ffcc00","color":"#000"})
+            $("#"+gameId).css({"background-color":"#7D3CCC","color":"#fff"})
 			$
 					.ajax({
 						url : "/rankinglist.record",

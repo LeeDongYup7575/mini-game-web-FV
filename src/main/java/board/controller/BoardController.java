@@ -25,9 +25,7 @@ import utils.Statics;
 @WebServlet("*.board")
 public class BoardController extends HttpServlet {
 	
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		request.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html; charset=UTF-8");
@@ -446,11 +444,7 @@ public class BoardController extends HttpServlet {
 				
 				dao.deleteBySeq(seq);
 				
-//				int seq = Integer.parseInt(request.getParameter("seq"));
-//				String boardCategory = request.getParameter("boardCategory");
-//				
-//				dao.deleteBySeq(seq);
-//				response.sendRedirect("/"+boardCategory+"List.board?cpage=1");
+				response.sendRedirect("/"+boardCategory+"List.board?cpage=1");
 
 			} else if (cmd.equals("/detail.board")) {
 				// 게시글 받아오기
@@ -469,6 +463,10 @@ public class BoardController extends HttpServlet {
 				request.getRequestDispatcher("/views/board/detail.jsp").forward(request, response);
 			}
 		} catch(Exception e) {
+			if (!"POST".equalsIgnoreCase(request.getMethod())) {
+                response.sendRedirect("/403.error");
+                return;
+            }
 			e.printStackTrace();
 		}
 
