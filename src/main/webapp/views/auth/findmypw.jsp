@@ -9,284 +9,259 @@
 <script src="https://code.jquery.com/jquery-3.7.1.js"
 	integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
 	crossorigin="anonymous"></script>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-* {
-	box-sizing: border-box;
-	background-color: black;
-}
+ * {
+            box-sizing: border-box;
+        }
 
-.container1 {
-	position: absolute;
-	top: 0px;
-	left: 70px;
-	width: 800px;
-	height: 848px;
-}
+        @media screen and (max-width : 768px) {
+            .container {
+                flex: 10;
+            }
 
-.title img {
-	position: absolute;
-	top: 50px;
-	left: 190px;
-	width: 366px;
-	height: 140px;
-	font-size: 64px;
-	line-height: 84px;
-	font-weight: 400;
-}
+            .right {
+                display: none;
+                border: none;
+            }
 
-.subtitle {
-	position: absolute;
-	top: 210px;
-	left: 276px;
-	width: 200px;
-	height: 52px;
-	font-size: 32px;
-	line-height: 48px;
-	font-weight: 400;
-	color: white;
-}
+            .left {
+                flex: 10 !important;
+                width: 100%;
+            }
+        }
 
-.id {
-	position: absolute;
-	top: 287px;
-	left: 134px;
-	opacity: 1;
-	width: 473px;
-	height: 46px;
-	padding-left: 12px;
-	padding-right: 12px;
-	font-size: 14px;
-	line-height: 22px;
-	font-weight: 400;
-	background: rgb(77, 76, 77);
-	border-radius: 10px;
-	border-width: 1px;
-	border-color: #BCC1CAFF;
-	border-style: solid;
-	outline: none;
-	color: white;
-}
+        body {
+            background-color: black;
+        }
 
-.pw {
-	position: absolute;
-	top: 371px;
-	left: 134px;
-	opacity: 1;
-	width: 473px;
-	height: 46px;
-	padding-left: 12px;
-	padding-right: 12px;
-	font-size: 14px;
-	line-height: 22px;
-	font-weight: 400;
-	background: rgb(77, 76, 77);
-	border-radius: 10px;
-	border-width: 1px;
-	border-color: #BCC1CAFF;
-	border-style: solid;
-	outline: none;
-	color: white;
-}
+        .container {
+            position: relative;
+            flex: 10;
+            border: none;
+            height: 800px;
+            display: flex;
+            margin-top:68px
+        }
 
-.rememberId {
-	position: absolute;
-	top: 227px;
-	left: 68px;
-	opacity: 1;
-}
+        .left {
 
-.rememberId div {
-	position: absolute;
-	top: 225px;
-	left: 98px;
-	opacity: 1;
-	width: 100px;
-	color: white;
-}
+            flex: 5;
+            float: left;
+            width: 50%;
+            height: 100%;
+        }
 
-.signIn {
-	position: absolute;
-	top: 494px;
-	left: 134px;
-	width: 473px;
-	height: 47px;
-	padding: 0 16px;
-	align-items: center;
-	justify-content: center;
-	font-size: 16px;
-	line-height: 26px;
-	font-weight: 400;
-	color: black;
-	background: white;
-	opacity: 1;
-	border: none;
-	border-radius: 10px;
-	box-shadow: 0px 8px 17px #636AE826, 0px 0px 2px #636AE81F;
-	cursor: pointer;
-	transition: background-color 0.5s ease, opacity 0.5s ease, box-shadow
-		0.5s ease;
-}
+        .logo {
+            width: 50%;
+            margin-top: 50px;
+            margin-left: 25%;
+            cursor: pointer;
+        }
 
-.signIn:hover {
-	background-color: #868789b9;
-}
+        .logo img {
+            width: 100%;
+        }
 
-.to-login{
-	position: absolute;
-	top: 555px;
-	left: 144px;
-	width: 91px;
-	height: 24px;
-	font-size: 14px;
-	line-height: 22px;
-	font-weight: 400;
-	color: white;
-}
+        .signin {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 50px;
+            font-size: 30px;
+            color: white;
 
-.join_membership {
-	position: absolute;
-	top: 555px;
-	left: 221px;
-	width: 91px;
-	height: 24px;
-	font-size: 14px;
-	line-height: 22px;
-	font-weight: 400;
-	color: white;
-}
+        }
 
-.findId {
-	position: absolute;
-	top: 555px;
-	left: 308px;
-	width: 91px;
-	height: 24px;
-	font-size: 14px;
-	line-height: 22px;
-	font-weight: 400;
-	color: white;
-}
+        .input-member {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin-top: 10px;
+            padding: 10px;
+        }
 
-.container2 {
-	position: absolute;
-	top: 0px;
-	left: 690px;
-	width: 700px;
-	height: 848px;
-	border-radius: 0px;
-}
+        .input-member input {
+            width: 350px;
+            height: 40px;
+            border-radius: 8px;
+            background: rgb(77, 76, 77);
+            color: white;
+            border: none;
+        }
 
-.sign {
-	width: 100%;
-	height: 100%;
-}
+        .input-member input::placeholder {
+            color: white;
+            opacity: 7;
+        }
 
-.logo {
-	position: absolute;
-	z-index: 20;
-	/* logo가 sign.jpg보다 앞에 오도록 z-index 값을 높임 */
-	width: 500px;
-	height: 300px;
-	top: 250px;
-	/* logo를 원하는 위치로 배치 */
-	left: 368px;
-	transform: translateX(-50%);
-	/* 수평 가운데 정렬 */
-	background-color: rgba(255, 255, 255, 0);
-}
+        .rememberId {
+            color: white;
+            width: 400px;
+            margin: auto;
+            margin-top: 20px;
+        }
 
-html, body {
-	overflow: hidden;
-	margin: 0;
-	padding: 0;
-	height: 100%;
-}
+        .signin-btn {
+            height: 45px;
+            width: 250px;
+            margin: auto;
+            border-radius: 8px;
+            margin-top: 30px;
 
-input::placeholder {
-	color: white;
-	/* 원하는 색상 코드로 변경 */
-}
+        }
 
-.with {
-	position: absolute;
-	top: 610px;
-	left: 315px;
-	width: 117px;
-	height: 24px;
-	font-size: 14px;
-	line-height: 22px;
-	font-weight: 400;
-	color: white;
-}
+        .signin-btn button {
+            width: 100%;
+            height: 100%;
+            border-radius: 8px;
+            cursor: pointer;
+            background: rgb(77, 76, 77);
+            color: white;
+            border: none;
+        }
 
-.google {
-	position: absolute;
-	top: 650px;
-	left: 180px;
-	width: 356px;
-	height: 52px;
-	padding: 0 16px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	font-family: Inter;
-	font-size: 16px;
-	line-height: 26px;
-	font-weight: 400;
-	color: black;
-	background: white;
-	opacity: 1;
-	border: none;
-	border-radius: 26px;
-	gap: 6px;
-	cursor: pointer;
-	transition: background-color 0.5s ease, opacity 0.5s ease, box-shadow
-		0.5s ease;
-}
+        .signin-btn :hover {
+            background: rgba(255, 255, 255, 0.494);
+            color: black;
+            transition-duration: 0.5s;
+        }
 
-.google:hover {
-	color: #FFFFFFFF;
-	background-color: #868789b9;
-}
+        .membership {
+            display: flex;
+            margin: auto;
+            /* 가운데 정렬 */
+            gap: 20px;
+            /* 요소 간격 조정 */
+            color: white;
+            width: 250px;
+            margin-top: 30px;
+        }
 
-.google i {
-	border: none;
-	outline: none;
-	background-color: rgba(255, 255, 255, 0);
-}
+        .with {
+            color: white;
+            text-align: center;
+            width: 250px;
+            margin: auto;
+            margin-top: 25px;
+        }
+
+        .google-login {
+            margin: auto;
+            width: 250px;
+            height: 50px;
+            margin-top: 25px;
+            border-radius: 8px;
+        }
+
+        .google-login button {
+            width: 100%;
+            height: 100%;
+            border-radius: 8px;
+            cursor: pointer;
+            background: rgb(77, 76, 77);
+            color: white;
+            border: none;
+        }
+
+        .google-login :hover {
+            background: rgba(255, 255, 255, 0.494);
+            color: black;
+            transition-duration: 0.5s;
+        }
+
+        .right {
+            float: right;
+            width: 50%;
+            height: 100%;
+            flex: 5;
+        }
+
+        .sign-img {
+            position: relative;
+            /* 자식 요소의 기준점 */
+            width: 100%;
+            height: 100%;
+        }
+
+        .sign {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+            /* 뒤로 배치 */
+        }
+
+        .logo2 {
+            position: absolute;
+            top: 45%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            /* 정중앙 배치 */
+            width: 400px;
+            /* 크기 조정 */
+            height: auto;
+            z-index: 20;
+            /* 앞으로 배치 */
+        }
+
+        a{
+            color: white;
+        }
 </style>
 </head>
 <body>
 
 	<body>
 
-	<div class="container1">
-		<div class="title">
-			<a href="/">
-				<img src="/assets/img/logoW.png" alt="">
-			</a>
-		</div>
-		<div class="subtitle">FIND MY PW</div>
-		
-		<!-- 폼 태그를 제거하고 input 필드만 남깁니다 -->
-		<input type="text" class="id" id="userId" name="id" placeholder="아이디 입력" required> 
-		<input type="email" class="pw" id="userEmail" name="email" placeholder="이메일 주소 입력" required>
-		<button type="button" class="signIn" id="findPwBtn">FIND MY PW</button>
+	<div class="container">
 
-		<div class="container2">
-			<img src="/assets/img/auth.jpg" alt="" class="sing"> 
-			<img src="/assets/img/logoW.png" alt="" class="logo">
+		<div class="left">
+			<div class="logo">
+				<a href="/index.jsp"> <img src="/assets/img/bigLogo.png" alt="">
+				</a>
+			</div>
+			<div class="signin">FIND MY PW</div>
+
+			<form id="findIdForm" action="/findId.users" method="post">
+				<div class="input-member">
+					<input type="text" class="id" id="userId" name="id" placeholder=" 아이디 입력">
+					<input type="text" class="pw" id="userEmail" name="email" placeholder=" 이메일 주소 입력">
+				</div>
+			
+
+			<div class="signin-btn">
+				<button type="button" class="login" id="findPwBtn">비밀번호 찾기</button>
+			</div>
+			</form>
+
+			<div class="membership">
+
+				<a href="/views/auth/login.jsp">
+					<div class="join-membership">로그인</div>
+				</a> <a href="/views/auth/agreement.jsp">
+					<div class="find-id">회원가입</div>
+				</a> <a href="/views/auth/findmyid.jsp">
+					<div class="find-pw">아이디 찾기</div>
+				</a>
+
+			</div>
+
 		</div>
-		
-		<a href="/views/auth/login.jsp">
-        	<div class="to-login">로그인</div>
-       	</a>
-		<a href="/views/auth/agreement.jsp">
-			<div class="join_membership">회원가입</div>
-		</a> 
-		<a href="/views/auth/findmyid.jsp">
-			<div class="findId">아이디 찾기</div>
-		</a>
+
+		<div class="right">
+			<div class="sign-img">
+				<img src="/assets/img/auth.jpg" class="sign"> <img
+					src="/assets/img/bigLogo.png" class="logo2">
+			</div>
+			
+
+		</div>
+	</div>
 
 		<script>
 	    $(document).ready(function() {
