@@ -104,7 +104,7 @@
                     dataType: "json",
                     success: function (response) {
                         if (response.status === "success") {
-                        	window.opener.location.href = "/views/mypage/modifyUser.jsp";
+                        	window.opener.location.href = "/modifyuser.mypage";
                         	window.close();
                         } else {
                             $("#errorMsg").text("비밀번호가 올바르지 않습니다.");

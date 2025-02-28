@@ -415,7 +415,7 @@ button:hover {
 	        // 모든 검사 통과 후 AJAX 요청
 	        $.ajax({
 	            type: "POST",
-	            url: "updateUserAction.jsp",
+	            url: "/views/mypage/updateUserAction.jsp",
 	            data: $("#modifyForm").serialize() + "&isGoogleUser=" + isGoogleUser, // 구글 사용자 여부 전달
 	            dataType: "json",
 	            success: function (response) {

@@ -312,7 +312,7 @@ public class UsersDAO {
                     rs.getString("PHONE"),
                     rs.getString("EMAIL"),
                     rs.getString("RNUM"),
-                    rs.getInt("WARNING_COUNT"),
+                    rs.getInt("WARNINGCOUNT"),
                     rs.getInt("WITHDRAW"),
                     rs.getInt("STATUS"),
                     rs.getInt("ISADMIN")
