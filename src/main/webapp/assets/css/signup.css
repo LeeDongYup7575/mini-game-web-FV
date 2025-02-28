@@ -5,6 +5,7 @@
     min-height: 100vh;
     background-color: black;
     text-align: center; /* 모든 요소 가운데 정렬 */
+    margin-top: 80px;
 }
 
 .container {
@@ -69,4 +70,11 @@ button {
     font-size: 12px;
     text-align: left;
     margin-top: 5px;
+}
+
+@media screen and (max-width: 1024px) {
+	.container {
+    	width: 90%;
+    }
+	
 }
