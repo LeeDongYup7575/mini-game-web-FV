@@ -10,9 +10,9 @@
         </div>
         <div class="footer-copyright">© 2025 TechX. All rights reserved.</div>
         <div class="footer-links">
-            <a href="/views/policy/terms.jsp">약관보기</a> | 
-            <a href="/views/policy/privacy.jsp">개인정보처리방침</a> | 
-            <a href="/views/policy/rights.jsp">이용자 권익 보호정책</a>
+            <a href="/terms.policy">약관보기</a> | 
+            <a href="/privacy.policy">개인정보처리방침</a> | 
+            <a href="/rights.policy">이용자 권익 보호정책</a>
         </div>
         <hr class="footer-divider">
         <div class="footer-social">
