@@ -233,6 +233,16 @@ button:hover {
 	        nicknameChecked: false // 닉네임 중복 검사 여부
 	    };
 
+	    // 구글 로그인 사용자인지 확인
+	    const isGoogleUser = $("#userId").val().startsWith("google_");
+	    
+	    // 구글 로그인 사용자일 경우 이메일 필드 읽기 전용으로 설정
+	    if (isGoogleUser) {
+	        $("#userEmail").prop("readonly", true);
+	        $("<div class='info-msg'>구글 계정으로 로그인한 경우 이메일을 변경할 수 없습니다.</div>")
+	            .insertAfter("#userEmailError");
+	    }
+
 	    // 실시간 유효성 검사 함수
 	    function validateInput(field, regex, errorMsg) {
 	        const $input = $(field);
@@ -348,7 +358,10 @@ button:hover {
 	    // 폼 제출 시 최종 유효성 검사
 	    $("#modifyForm").submit(function (event) {
 	        event.preventDefault();
+	        $("#errorMsg").hide();
+	        $("#successMsg").hide();
 
+	        // 닉네임 중복 검사 확인
 	        if ($("#userNickname").val().trim() !== "<%=loginUser.getNickname()%>" && !validationState.nicknameChecked) {
 	            $("#userNicknameError").removeClass("success-msg").addClass("error-msg")
 	                .text("닉네임 중복 확인이 필요합니다.").show();
@@ -357,28 +370,56 @@ button:hover {
 	            return;
 	        }
 
+	        // 구글 로그인 사용자와 일반 사용자에 따른 유효성 검사 분기
 	        let isValid = true;
 
-	        for (let field in validationState) {
-	            if (field === 'nicknameChecked') continue;
-	            if (!validationState[field]) {
+	        if (isGoogleUser) {
+	            // 구글 로그인 사용자는 필수 필드만 검사
+	            if (!validationState.userName || !validationState.userNickname) {
 	                isValid = false;
-	                break;
+	                $("#errorMsg").text("이름과 닉네임은 필수 입력값입니다.").show();
+	                return;
+	            }
+	            
+	            // 이메일은 변경하지 않도록 원래 값으로 복원
+	            $("#userEmail").val("<%=loginUser.getEmail()%>");
+	            
+	            // 전화번호와 생년월일이 비어있으면 통과 (선택 필드로 처리)
+	            if ($("#userPhone").val().trim() !== "" && !validationState.userPhone) {
+	                isValid = false;
+	                $("#errorMsg").text("전화번호 형식이 올바르지 않습니다.").show();
+	                return;
+	            }
+	            
+	            if ($("#userRnum").val().trim() !== "" && !validationState.userRnum) {
+	                isValid = false;
+	                $("#errorMsg").text("생년월일 형식이 올바르지 않습니다.").show();
+	                return;
+	            }
+	        } else {
+	            // 일반 사용자는 모든 필드 검사
+	            for (let field in validationState) {
+	                if (field === 'nicknameChecked') continue;
+	                if (!validationState[field]) {
+	                    isValid = false;
+	                    break;
+	                }
+	            }
+	            
+	            if (!isValid) {
+	                $("#errorMsg").text("입력값을 다시 확인해주세요.").show();
+	                return;
 	            }
 	        }
 
-	        if (!isValid) {
-	            $("#errorMsg").text("입력값을 다시 확인해주세요.").show();
-	            $("#successMsg").hide();
-	            return;
-	        }
-
+	        // 모든 검사 통과 후 AJAX 요청
 	        $.ajax({
 	            type: "POST",
 	            url: "updateUserAction.jsp",
-	            data: $("#modifyForm").serialize(),
+	            data: $("#modifyForm").serialize() + "&isGoogleUser=" + isGoogleUser, // 구글 사용자 여부 전달
 	            dataType: "json",
 	            success: function (response) {
+	                console.log("서버 응답:", response); // 디버깅용 로그
 	                if (response.status === "success") {
 	                    $("#successMsg").text("회원정보가 성공적으로 수정되었습니다.").show();
 	                    $("#errorMsg").hide();
@@ -387,30 +428,13 @@ button:hover {
 	                    $("#errorMsg").text(response.message || "회원정보 수정에 실패했습니다.").show();
 	                }
 	            },
-	            error: function () {
+	            error: function (xhr, status, error) {
+	                console.error("AJAX 오류:", xhr.responseText); // 자세한 오류 정보
 	                $("#errorMsg").text("서버 오류가 발생했습니다. 다시 시도해주세요.").show();
 	            }
 	        });
 	    });
 	});
-	
-	// 탈퇴하기 버튼 이벤트
-    $("#withdraw-btn").on("click",function(){
-    	if(confirm("정말 탈퇴하시겠습니까?")) {
-    		$("#hiddenWithdrawId").val($("#userId").val());
-        	$("#withdraw-frm").submit();
-    	}
-    	
-    })
-    
-    $(".mypage").on("click",()=>{
-		window.location.href = "/info.mypage";
-	})
-	
-	$(".logo").on("click",()=>{
-		window.location.href = "/index.jsp";
-	})
-	
 </script>
 
 </body>

@@ -40,6 +40,11 @@ public class MyPageController  extends HttpServlet {
             UsersDTO loginUser = (UsersDTO) session.getAttribute("loginUser");
             System.out.println("로그인유저 아이디 : " + loginUser.getId());
             try {
+            	//유저 게임 스코어 
+            	int totalGameRecord = gameRecordDao.getTotalRecord(loginUser.getNickname());
+            	
+            	int userLevel = (totalGameRecord/10) < 0 ? 1 : (totalGameRecord/10);
+            	
                 // 게임 최고 기록 가져오기
                 Map<String, Integer> highestScores = gameRecordDao.getHighestScoresByGame(loginUser.getNickname());
                 
@@ -49,6 +54,8 @@ public class MyPageController  extends HttpServlet {
                 // 사용자의 전체 게시글 목록
                 List<BoardDTO> userBoardList = userBoardDao.userBoardList(loginUser.getNickname());
                 request.setAttribute("loginUser", loginUser);
+                request.setAttribute("totalGameRecord", totalGameRecord);
+                request.setAttribute("userLevel", userLevel);
                 request.setAttribute("highestScores", highestScores);
                 request.setAttribute("userRankings", userRankings);
                 request.setAttribute("userBoardList", userBoardList);
@@ -60,15 +67,6 @@ public class MyPageController  extends HttpServlet {
                 e.printStackTrace();
                 throw new ServletException(e);
             }
-        }
-        // 사용자가 작성한 게시판 목록 요청         
-        else if(cmd.equals("/mypost.mypage")) {
-        	
-        	
-        }
-        // 사용자가 작성한 댓글 목록 요청   
-        else if(cmd.equals("/myreply.mypage")) {
-        	
         }
 
     }

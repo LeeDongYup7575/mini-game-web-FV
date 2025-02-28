@@ -14,11 +14,12 @@ if (loginUser == null) {
 	return;
 }
 
-GameRecordDTO gameRecord = (GameRecordDTO) request.getAttribute("gameRecord");
-if (gameRecord == null) {
+int totalGameRecord = (Integer) request.getAttribute("totalGameRecord");
+int userLevel = (Integer) request.getAttribute("userLevel");
+/* if (totalGameRecord == 0) {
 	// 게임이 없을 때, 어떻게 처리할 지 의논하기 
 	//return;
-}
+} */
 
 List<BoardDTO> userBoardList = (List<BoardDTO>) request.getAttribute("userBoardList");
 System.out.println(userBoardList);
@@ -74,16 +75,16 @@ pageContext.setAttribute("userRankings", userRankings);
 			<%=loginUser.getRnum()%>
 		</div>
 		<div class="line2"></div>
-		<c:if test="${not empty gameRecord}">
+		<c:if test="${totalGameRecord != 0}">
 			<div class="gamepoint1">게임포인트</div>
-			<div class="gamepoint2"><%=gameRecord.getRecord()%></div>
-			<div class="playtime1">총 플레이 시간</div>
-			<div class="playtime2"><%=gameRecord.getPlayTime()%></div>
+			<div class="gamepoint2"><%=totalGameRecord%></div>
+			<div class="playtime1">나의 레벨</div>
+			<div class="playtime2"><%=userLevel%></div>
 		</c:if>
-		<c:if test="${empty gameRecord}">
+		<c:if test="${totalGameRecord == 0}">
 			<div class="gamepoint1">게임포인트</div>
 			<div class="gamepoint2">0</div>
-			<div class="playtime1">총 플레이 시간</div>
+			<div class="playtime1">나의 레벨</div>
 			<div class="playtime2">0</div>
 		</c:if>
 		<div class="line3"></div>
@@ -126,9 +127,15 @@ pageContext.setAttribute("userRankings", userRankings);
 
 		<script>
 
-$(".modify").on("click",()=>{
-	window.open("/views/mypage/checkPw.jsp","_blank", "width=500, height=310,top=250,left=500");
-})
+$(".modify").on("click", function() {
+		// 구글 로그인 사용자인 경우 (ID가 google_로 시작)
+	if ("<%=loginUser.getId()%>".startsWith("google_")) {
+		        window.open("/views/mypage/modifyUser.jsp");
+	    } else {
+		   // 일반 사용자는 비밀번호 확인
+		        window.open("/views/mypage/checkPw.jsp", "_blank", "width=500, height=310, top=250, left=500");
+		    }
+});
 
 $(".main").on("click",()=>{
 	window.location.href = "/index.jsp";
@@ -223,6 +230,7 @@ $(".main").on("click",()=>{
 	<div class="subtitle">내 게임 순위</div>
 	<%-- 게임 ID 및 이미지명 리스트 설정 --%>
 	<c:set var="gameIds" value="4001,4002,4003,4004,4005,4006" />
+	<c:set var="gameLinks" value="barbecue.games,rhythmGame.games,zombieCrusher.games,snakeGame.games,crossRoad.games,chamchamcham.games" />
 	<c:set var="gameImages"
 		value="barbecue.jpeg,rhythm.png,zombie.jpeg,snake.jpeg,crossroad.jpeg,chamchamcham.jpeg" />
 	<c:set var="gameNames"
@@ -234,6 +242,7 @@ $(".main").on("click",()=>{
 			<c:set var="gameId" value="${fn:split(gameIds, ',')[index]}" />
 			<c:set var="gameImage" value="${fn:split(gameImages, ',')[index]}" />
 			<c:set var="gameName" value="${fn:split(gameNames, ',')[index]}" />
+			<c:set var="gameLink" value="${fn:split(gameLinks, ',')[index]}" />
 
 			<div class="game${index + 1}">
 				<div class="gameimg">
@@ -243,12 +252,12 @@ $(".main").on("click",()=>{
 				<c:choose>
 					<c:when test="${empty highestScores[gameId]}">
 						<div class="rank">
-							<span>게임 기록이 존재하지 않습니다</span> <span> <c:out
-									value="${highestScores[gameId]}" />
+							<span>게임 기록이 존재하지 않습니다</span> <span> 
+							<%-- <c:out value="${highestScores[gameId]}" /> --%>
 							</span>
 
 						</div>
-						<a href="/games/${gameId}">
+						<a href="/${gameLink}">
 							<button>게임으로 이동</button>
 						</a>
 

@@ -8,7 +8,7 @@
 
   nickname = java.net.URLEncoder.encode(nickname, "UTF-8");
 %>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!DOCTYPE html>
 <html lang="ko">
@@ -1008,6 +1008,9 @@ to {
 </head>
 
 <body>
+	<c:if test="${empty loginUser}">
+    	<c:redirect url="/403.error"/>
+	</c:if>
 	<!-- 공통 Header -->
 	<%@ include file="/includes/header.jsp"%>
 
@@ -1099,7 +1102,7 @@ to {
 								<li class="game-info-item"><span class="info-label">난이도</span>
 									<span class="info-value">하</span></li>
 								<li class="game-info-item"><span class="info-label">개발
-										상태</span> <span class="info-value">진행중</span></li>
+										상태</span> <span class="info-value">완료</span></li>
 							</ul>
 						</div>
 					</div>

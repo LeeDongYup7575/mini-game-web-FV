@@ -55,6 +55,7 @@ public class UsersController extends HttpServlet {
 				if (dto != null) {
 					
 					if (dto.getWarningCount() == 0) {
+						dao.insertLastLogin(id);
 						HttpSession session = request.getSession();
 						session.setAttribute("loginUser", dto);
 						session.setAttribute("nickname", dto.getNickname());

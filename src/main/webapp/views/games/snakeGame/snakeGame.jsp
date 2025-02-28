@@ -97,6 +97,9 @@
 
 
 <body>
+	<c:if test="${empty loginUser}">
+		<c:redirect url="/403.error"/>
+	</c:if>
 	<!-- 공통 Header -->
 	<%@ include file="/includes/header.jsp"%>
 
@@ -244,7 +247,7 @@
 							<li class="game-info-item"><span class="info-label">난이도</span>
 								<span class="info-value">하</span></li>
 							<li class="game-info-item"><span class="info-label">개발
-									상태</span> <span class="info-value">완성</span></li>
+									상태</span> <span class="info-value">완료</span></li>
 						</ul>
 					</div>
 				</div>

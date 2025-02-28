@@ -570,11 +570,15 @@
 /* Table 1 */
 #pagination {
 	position: absolute;
-	top: 520px; /* 테이블 하단으로부터 적절한 위치로 조정 가능 */
+	top: 800px; /* 테이블 하단으로부터 적절한 위치로 조정 가능 */
 	left: 750px; /* 테이블과 왼쪽 정렬 */
 	display: flex;
 	gap: 8px;
-	padding: 100px;
+	/*padding: 100px;
+	display: flex;
+    align-items: center;
+    justify-content: center;*/
+	
 }
 
 #pagination button {
@@ -585,6 +589,10 @@
 	border: 1px solid #DEE1E6;
 	border-radius: 4px;
 	cursor: pointer;
+	display: flex;
+    align-items: center;
+    justify-content: center;
+    height:0px;
 }
 
 #pagination button:hover {
@@ -619,17 +627,19 @@ th, td {
 
 
 th:nth-child(1), td:nth-child(1) {
-	width: 50px;
+	width: 750px;
+	text-align: center;
 	/* #1 열 */
 }
 
 th:nth-child(2), td:nth-child(2) {
-	width: 800px;
+	width: 150px;
+	text-align: center;
 	/* 제목 열 */
 }
 
 th:nth-child(2), th:nth-child(3), th:nth-child(4), th:nth-child(4), td:nth-child(4),
-	th:nth-child(3), td:nth-child(3) {
+	th:nth-child(3), td:nth-child(3),th:nth-child(1) {
 	text-align: center;
 }
 

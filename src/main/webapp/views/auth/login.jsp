@@ -49,14 +49,16 @@
 			<div class="rememberId">Remember Id</div>
 		</div>
 		<div class="container2">
-			<img src="/assets/img/auth.jpg" alt="" class="sign"> <img src="/assets/img/logoW.png" alt="" class="logo2">
+			<img src="/assets/img/auth.jpg" alt="" class="sign"> <img src="/assets/img/bigLogo.png" alt="" class="logo2">
 		</div>
 		
 		<div class="with">Or sign in with</div>
-			<button class="google">
+		<a href="/login.google">
+			<button class="google" >
 				<i class="fa-brands fa-google fa-lg" style="color: #ffa200;"></i>
 				Google 계정으로 로그인
 			</button>
+		</a>
 	</div>
 		
 	

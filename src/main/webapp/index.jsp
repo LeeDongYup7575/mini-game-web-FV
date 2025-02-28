@@ -72,6 +72,9 @@
                                                 <div class="login-box">
                                                     <button class="login-button"
                                                         onclick="goToPage('views/auth/login.jsp')">ID 로그인</button>
+                                                    <button class="login-button"
+                                                        onclick="goToPage('/login.google')" 
+                                                        style="background-color:white; color:black;">Google 로그인</button>    
                                                     <div class="login-options">
                                                         <span>OR</span>
                                                         <div class="login-links">
@@ -342,7 +345,7 @@
                                 } else if (gameName === "참참참!") {
                                     gameType.html("참참참 게임");
                                     gameTitle.html("참참참!");
-                                    gameContent.css("background", "url('https://picsum.photos/1440/400')");
+                                    gameContent.css("background", "url('/assets/img/chamchamcham_banner.png)");
 
 
                                     // 태그 추가 (예시)

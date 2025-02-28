@@ -98,4 +98,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
+$(".nav-link").on("click",function(){
+	let pageNum = 1;
+	sessionStorage.setItem("last_cpage",pageNum);
+	
+});
+
 </script>

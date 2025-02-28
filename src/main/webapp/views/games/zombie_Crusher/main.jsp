@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -51,12 +51,15 @@
 </style>
 </head>
   <body>
+        	<c:if test="${empty loginUser}">
+    			<c:redirect url="/403.error"/>
+			</c:if>  
             <!-- 공통 Header -->
             <%@ include file="/includes/header.jsp" %>
 
                 <main>
                     <section class="my-game-section">
-                        <h1 class="my-game-title">Barbecue Game</h1>
+                        <h1 class="my-game-title">Zombie Crusher</h1>
 
                         <div class="my-game-wrap">
                             <div class="game-hero" id="gamebox">
@@ -126,7 +129,7 @@
                                         </li>
                                         <li class="game-info-item">
                                             <span class="info-label">개발 상태</span>
-                                            <span class="info-value">진행중</span>
+                                            <span class="info-value">완료</span>
                                         </li>
                                     </ul>
                                 </div>

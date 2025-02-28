@@ -120,12 +120,8 @@
         }
 
         // 이벤트 바인딩
-        //$(".modify-btn").on("click", handlePasswordValidation);
         $("#checkPwForm").on("submit", handlePasswordValidation);
 
-        // 서버 오류 메시지 처리
-        let errorMessage = "<c:out value='${errorMessage}'/>";
-        if (errorMessage) alert(errorMessage);
     });
     </script>
 </body>

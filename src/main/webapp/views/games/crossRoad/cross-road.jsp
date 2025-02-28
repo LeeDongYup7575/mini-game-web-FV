@@ -42,6 +42,9 @@
         </head>
 
         <body>
+        	<c:if test="${empty loginUser}">
+    			<c:redirect url="/403.error"/>
+			</c:if>
             <!-- 공통 Header -->
             <%@ include file="/includes/header.jsp" %>
 
@@ -117,7 +120,7 @@
                                         </li>
                                         <li class="game-info-item">
                                             <span class="info-label">개발 상태</span>
-                                            <span class="info-value">진행중</span>
+                                            <span class="info-value">완료</span>
                                         </li>
                                     </ul>
                                 </div>

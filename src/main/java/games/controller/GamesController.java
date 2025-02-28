@@ -7,6 +7,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import auth.dto.UsersDTO;
 
 @WebServlet("*.games")
 public class GamesController extends HttpServlet{
@@ -20,20 +23,17 @@ public class GamesController extends HttpServlet{
 		String cmd = request.getRequestURI();
 
 		System.out.print("클라이언트 요청: " + cmd);
-
-		//dao 인스턴스 생성
+		
+		HttpSession session = request.getSession();
+		UsersDTO loginUser = (UsersDTO) session.getAttribute("loginUser");
+		
+		if(loginUser == null) {
+			response.sendRedirect("/403.error");
+            return;
+		}
 
 		try {
-			//요청은 필요에 따라 추가/삭제 
-			if (cmd.equals("/add.games")) {
-				
-			} else if (cmd.equals("/list.games")) {
-				
-			} else if (cmd.equals("/update.games")) {
-				
-			} else if (cmd.equals("/delete.games")) {
-				
-			} else if (cmd.equals("/barbecue.games")) {
+			if (cmd.equals("/barbecue.games")) {
 				response.sendRedirect("/views/games/barbecue/barbecue-game.jsp");
 
 			} else if (cmd.equals("/chamchamcham.games")) {
@@ -49,7 +49,7 @@ public class GamesController extends HttpServlet{
 				response.sendRedirect("/views/games/rhythmGame/rhythm.jsp");
 				
 			}else if (cmd.equals("/snakeGame.games")) {
-				 response.sendRedirect("/views/games/snakeGame/snakeGame.jsp");
+				response.sendRedirect("/views/games/snakeGame/snakeGame.jsp");
 			}
 		} catch(Exception e) {
 			e.printStackTrace();

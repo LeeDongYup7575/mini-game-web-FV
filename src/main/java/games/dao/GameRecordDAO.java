@@ -78,6 +78,27 @@ public class GameRecordDAO {
 		}
 		return gameRecordList;
 	}
+	
+	// 게임 기록 정보를 모두 출력하는 함수
+		public int getTotalRecord(String nickname) throws Exception {
+			
+			int totalRecord = 0;
+			String sql = "SELECT SUM(record) as total_record FROM gamerecord WHERE userid = ?";
+
+			try (Connection con = this.getConnection(); PreparedStatement pstat = con.prepareStatement(sql)) {
+				pstat.setString(1, nickname);
+
+				try (ResultSet rs = pstat.executeQuery();) {
+					while (rs.next()) {
+						totalRecord = rs.getInt("total_record");
+					}
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				throw e;
+			}
+			return totalRecord;
+		}
 
 	// my page에서 특정 사용자의 게임 리스트를 출력하는 함수
 	public GameRecordDTO gameMypage(String userid) throws Exception {

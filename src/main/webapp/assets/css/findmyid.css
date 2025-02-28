@@ -187,7 +187,7 @@
 	height: 300px;
 	top: 250px;
 	/* logo를 원하는 위치로 배치 */
-	left: 50%;
+	left: 368px;
 	transform: translateX(-50%);
 	/* 수평 가운데 정렬 */
 	background-color: rgba(255, 255, 255, 0);
