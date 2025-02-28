@@ -216,7 +216,7 @@ button:hover {
 				<div id="userRnumError" class="error-msg"></div>
 			</div>
 			<button type="submit" class="modify-btn">수정하기</button>
-			<button type="button" class="mypage">마이페이지로</button>
+			<button type="button" class="mypage" onclick="location.href='/info.mypage'">마이페이지로</button>
 		</form>
 		<form id="withdraw-frm" action="/withdraw.users">
 			<input type="hidden" name="withdrawId" id="hiddenWithdrawId" />
