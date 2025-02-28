@@ -345,7 +345,7 @@
                                 } else if (gameName === "참참참!") {
                                     gameType.html("참참참 게임");
                                     gameTitle.html("참참참!");
-                                    gameContent.css("background", "url('/assets/img/chamchamcham_banner.png)");
+                                    gameContent.css("background", "url('/assets/img/chamchamcham_banner.png')");
 
 
                                     // 태그 추가 (예시)
