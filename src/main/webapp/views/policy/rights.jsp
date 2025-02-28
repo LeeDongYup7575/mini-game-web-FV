@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TechX - 이용약관</title>
+<title>TechX - 이용자 권익 보호정책</title>
 <script src="https://code.jquery.com/jquery-3.7.1.js"
 	integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
 	crossorigin="anonymous"></script>
@@ -39,13 +39,13 @@
 
 		<ul class="nav nav-tabs terms-tabs" id="termsTab" role="tablist">
 			<li class="nav-item" role="presentation">
-				<a class="nav-link" id="terms-tab" href="/views/policy/terms.jsp">약관보기</a>
+				<a class="nav-link" id="terms-tab" href="/terms.policy">약관보기</a>
 			</li>
 			<li class="nav-item" role="presentation">
-				<a class="nav-link" id="privacy-tab" href="/views/policy/privacy.jsp">개인정보처리방침</a>
+				<a class="nav-link" id="privacy-tab" href="/privacy.policy">개인정보처리방침</a>
 			</li>
 			<li class="nav-item" role="presentation">
-				<a class="nav-link active" id="rights-tab" href="/views/policy/rights.jsp">이용자
+				<a class="nav-link active" id="rights-tab" href="/rights.policy">이용자
 					권익 보호정책</a>
 			</li>
 		</ul>
