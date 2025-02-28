@@ -20,13 +20,17 @@
 	function loadReplies(){
 		$.ajax({
 			url:"/list.reply",
-            data: {seq: "${post.seq }"}
+            data: {seq: "${post.seq }"},
 		}).done(function(resp){
 			$("#replyUl").empty();
 			
 			let replyList = JSON.parse(resp);
-			$("#replyCount").html("댓글\t" + replyList.length);
-			$("#replyCountSm").html("댓글\t" + replyList.length);
+			let replyCnt = replyList.length;
+			
+			if(replyCnt == 0){
+    			$("#replyCount").html("댓글\t0");
+    			$("#replyCountSm").html("댓글\t0");
+    		}
 			
             replyList.forEach(replyData => {
             	let replyLi = $("<li>").addClass("reply-li");
@@ -55,9 +59,11 @@
             	
             	$.ajax({
         			url:"/subList.reply",
-                    data: {parentReplySeq: replyData.seq}
+                    data: {parentReplySeq: replyData.seq},
             	}).done(function(resp){
             		let subReplyList = JSON.parse(resp);
+            		
+            		replyCnt += subReplyList.length;
             		
             		subReplyList.forEach(subReplyData => {
 	                	let subReply = $("<div>").addClass("reply sub-reply").attr("id", subReplyData.seq);
@@ -80,6 +86,9 @@
                 		
 	            		replyLi.append(subReply);
             		});
+            		
+                	$("#replyCount").html("댓글\t" + replyCnt);
+        			$("#replyCountSm").html("댓글\t" + replyCnt);
             	});
             	
             	
@@ -95,11 +104,25 @@
 			return;
 		}
 		
+	    // 다른 답글달기 인박스 닫기
+	    $(".sub-reply-inbox").each(function(){
+	        $(this).prev(".parent-reply").css("background-color", "white");
+	        $(this).remove();
+	    });
+		
+		// 다른 수정 인박스 닫기
+	    $(".update-reply-inbox").each(function(){
+	        let originalReply = $(this).closest(".reply").data("originalReply");
+	        if (originalReply) {
+	            $(this).closest(".reply").html(originalReply);
+	        }
+	    });
+		
 		$(this).closest(".parent-reply").css("background-color", "rgb(250, 250, 250)");
 		
 	    let replyLi = $(this).closest(".reply-li");
 	    
-	    // 이미 입력창이 존재하면 추가하지 않음
+	    // 이미 답글달기 입력창이 존재하면 추가하지 않음
 	    if (replyLi.find(".sub-reply-inbox").length > 0) {
 	        return;
 	    }
@@ -120,6 +143,7 @@
 		replyInbox.append(replyInboxName, replyInboxText, replyBtns, hdParentBoardSeq, hdWriter)
 		
 		$(this).closest(".parent-reply").after(replyInbox);
+		replyInboxText.focus();
 		
 		// 답글달기 취소
 		replyCancelBtn.on("click", function(){
@@ -166,6 +190,12 @@
 	
 	// 댓글 수정 버튼 클릭 이벤트
 	$(document).on("click", ".update-reply-btn", function(){
+	    // 다른 답글 인박스 닫기
+	    $(".sub-reply-inbox").each(function(){
+	        $(this).prev(".parent-reply").css("background-color", "white");
+	        $(this).remove();
+	    });
+		
 		// 한번에 하나의 댓글 수정폼만 열리도록 함.
 		$(".update-reply-inbox").closest(".reply").each(function(){
  			// 각 댓글에 대해 검사 -> $(this).data("originalReply")가 존재하면 수정 폼 열려있다는 의미 -> 기존 댓글로 복원 (수정 폼 닫기)
@@ -190,7 +220,7 @@
 		
 		let replyBtns = $("<div>").addClass("reply-btns");		
 		let replyCancelBtn = $("<button>").addClass("reply-cancel-btn").attr("id", "replyCancelBtn").html("취소");
-		let replySaveBtn = $("<button>").addClass("reply-save-btn").attr("id", "replySaveBtn").html("등록");
+		let replySaveBtn = $("<button>").addClass("reply-save-btn").attr("id", "replySaveBtn").html("수정");
 		
 		let hdParentBoardSeq = $("<input>").attr({type: "hidden", name: "parentBoardSeq", value:"${post.seq}"});
 		let hdWriter = $("<input>").attr({type: "hidden", name: "writer", value:"${nickname}"});
@@ -200,6 +230,10 @@
 		
 		// 기존 댓글 inbox로 대체  
 		$(this).closest(".reply").html(replyInbox);
+		
+		replyInboxText.focus();
+		let textLength = replyInboxText.val().length;
+	    replyInboxText[0].setSelectionRange(textLength, textLength);
 		
 		// 댓글 수정 취소 버튼 클릭 이벤트
 		replyCancelBtn.on("click", function(){

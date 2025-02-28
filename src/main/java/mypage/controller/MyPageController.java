@@ -27,6 +27,14 @@ public class MyPageController  extends HttpServlet {
 
         request.setCharacterEncoding("UTF-8");
         response.setContentType("text/html; charset=UTF-8");
+        
+        // 직접 url 입력차단 (Referer 검사)
+        String referer = request.getHeader("referer");
+        if(referer == null || !referer.contains("localhost")) {
+        	System.out.println("🚨 직접 URL 입력 차단: " + request.getRequestURI());
+        	response.sendRedirect("/includes/error403.jsp");
+        	return;
+        }
 
         String cmd = request.getRequestURI();
         System.out.println("클라이언트 요청: " + cmd);
@@ -67,6 +75,12 @@ public class MyPageController  extends HttpServlet {
                 e.printStackTrace();
                 throw new ServletException(e);
             }
+        } else if(cmd.equals("/updateusers.mypage")) {
+        	request.getRequestDispatcher("/views/mypage/checkPw.jsp").forward(request, response);
+        } else if(cmd.equals("/updateusersbygoogle.mypage")) {
+        	request.getRequestDispatcher("/views/mypage/modifyUser.jsp").forward(request, response);
+        } else if(cmd.equals("/modifyuser.mypage")) {
+        	request.getRequestDispatcher("/views/mypage/modifyUser.jsp").forward(request, response);
         }
 
     }

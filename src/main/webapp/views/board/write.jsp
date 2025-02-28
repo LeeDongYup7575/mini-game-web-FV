@@ -51,7 +51,10 @@
 </script>
 </head>
 <body>
-
+	<c:if test="${empty loginUser}">
+		<c:redirect url="/403.error"/>
+	</c:if>
+	
     <%@ include file="/includes/header.jsp" %>
 
     <main class="main-content">

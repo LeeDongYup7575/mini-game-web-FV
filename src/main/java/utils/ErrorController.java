@@ -24,6 +24,8 @@ public class ErrorController extends HttpServlet {
 				response.sendRedirect("/includes/error403.jsp");
 			}else if(cmd.equals("/404.error")) {
 				response.sendRedirect("/includes/error404.jsp");
+			}else if(cmd.equals("/500.error")) {
+				response.sendRedirect("/includes/error500.jsp");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
