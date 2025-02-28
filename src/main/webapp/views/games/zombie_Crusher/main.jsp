@@ -41,6 +41,10 @@
 <!-- 게임 js -->
 <script src="Scene01.js"></script>
 <script src="GameOver.js"></script>
+<!-- font-awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+<!-- 구글폰트 -->
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
 
 <style>
 #gamebox {
