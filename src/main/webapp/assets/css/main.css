@@ -378,6 +378,10 @@ padding-bottom: 8rem;
         height: 100%;
     }
 
+    .right-container{
+        height: 60vh;
+    }
+
     .image-container {
         height: 300px;
     }

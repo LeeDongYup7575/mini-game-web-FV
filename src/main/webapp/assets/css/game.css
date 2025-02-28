@@ -26,6 +26,8 @@ section {
 }
 
 .game-hero {
+    display: flex;
+    justify-content: center;
     position: relative;
     width: 100%;
     height: 550px;
