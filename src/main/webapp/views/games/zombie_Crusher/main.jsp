@@ -46,13 +46,13 @@
 <!-- 구글폰트 -->
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
 
-<style>
+<!-- <style>
 #gamebox {
 	border: 1px solid black;
 	width: 960px;
 	height: 550px;
 }
-</style>
+</style> -->
 </head>
   <body>
         	<c:if test="${empty loginUser}">
