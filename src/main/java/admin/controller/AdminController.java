@@ -34,6 +34,14 @@ public class AdminController extends HttpServlet {
 		BoardDAO bdao = BoardDAO.getInstance();
 		BanDAO bandao = BanDAO.getInstance();
 		Gson g = new Gson();
+		
+		// ✅ 직접 URL 입력 차단 (Referer 검사)
+		String referer = request.getHeader("referer");
+		if (referer == null || !referer.contains("localhost")) { 
+			System.out.println("🚨 직접 URL 입력 차단: " + request.getRequestURI());
+			response.sendRedirect("/includes/error403.jsp");
+			return;
+		}
 
 		System.out.println("클라이언트 요청 : " + cmd);
 
@@ -315,7 +323,8 @@ public class AdminController extends HttpServlet {
 				e.printStackTrace();
 				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR); // 500 오류
 			}
-		} else if (cmd.equals("/getuserlist.admin")) {
+		} else {
+			response.sendRedirect("/includes/403.jsp");
 
 		}
 	}
