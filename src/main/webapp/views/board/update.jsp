@@ -109,6 +109,10 @@
 </script>
 </head>
 <body>
+	<c:if test="${empty loginUser}">
+		<c:redirect url="/403.error"/>
+	</c:if>
+	
 	<%@ include file="/includes/header.jsp" %>
 	
 	<form action="/updateComplete.board" method="post" id="uFrm" enctype="multipart/form-data">   
