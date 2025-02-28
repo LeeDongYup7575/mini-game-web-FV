@@ -14,12 +14,13 @@ if (loginUser == null) {
 <!DOCTYPE html>
 <html>
 <head>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
 <meta charset="UTF-8">
-<title>회원정보 수정</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TechX Games - 회원정보 수정</title>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <style>
 body {
-	font-family: Arial, sans-serif;
 	background-color: black;
 	margin: 0;
 	height: 100vh;
@@ -27,6 +28,7 @@ body {
 	flex-direction: column; /* 세로 정렬 */
 	align-items: center; /* 가로 가운데 정렬 */
 	justify-content: flex-start; /* 위쪽 정렬 */
+	font-family: "Noto Sans KR", serif;
 }
 
 .wrapper {
@@ -157,13 +159,25 @@ button:hover {
 	background-color:#868789;
 }
 
+@media screen and (max-width: 768px) {
+	.container{width: 90%;}
 
+	#withdraw-btn{
+		position: relative;
+		top: auto;
+		left: auto;
+	}
+}
 
 </style>
 </head>
 <body>
 	<div class="wrapper">
-		<div class="logo"><img src="/assets/img/logoW.png"></div>
+		<div class="logo">
+			<a href="/">
+                <img class="logo-img" src="/assets/img/logoW.png" alt="TechX Logo" />
+            </a>
+		</div>
 		<div class="container">
 		<h2>회원정보 수정</h2>
 		<form id="modifyForm" action="/info.mypage">
