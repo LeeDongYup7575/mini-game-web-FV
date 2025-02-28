@@ -40,7 +40,8 @@ pageContext.setAttribute("userRankings", userRankings);
 <html>
 <head>
 <meta charset="UTF-8">
-<title>마이페이지</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TechX - 마이페이지</title>
 <script src="https://code.jquery.com/jquery-3.7.1.js"
 	integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
 	crossorigin="anonymous"></script>
@@ -48,19 +49,19 @@ pageContext.setAttribute("userRankings", userRankings);
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
 	integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
 	crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/css/mypage.css">
 
 </head>
 <body>
-
+	<!-- 좌측 사이드 바 아이콘 버튼 -->
+	<div class="menu">
+		<i class="fa-solid fa-gamepad" id="gameicon" style="color: #ffffff;"></i>
+		<i class="fa-solid fa-clipboard-list" id="boardicon"
+			style="color: #ffffff;"></i>
+	</div>
 	<div class="container1">
 		<div class="title">My Page</div>
-		<!-- 좌측 사이드 바 아이콘 버튼 -->
-		<div class="menu">
-			<i class="fa-solid fa-gamepad" id="gameicon" style="color: #ffffff;"></i>
-			<i class="fa-solid fa-clipboard-list" id="boardicon"
-				style="color: #ffffff;"></i>
-		</div>
 		<div class="nickname" name="nickname"><%=loginUser.getNickname()%></div>
 		<div class="id" name="id"><%=loginUser.getId()%></div>
 		<div class="line1"></div>
@@ -76,10 +77,16 @@ pageContext.setAttribute("userRankings", userRankings);
 		</div>
 		<div class="line2"></div>
 		<c:if test="${totalGameRecord != 0}">
-			<div class="gamepoint1">게임포인트</div>
-			<div class="gamepoint2"><%=totalGameRecord%></div>
-			<div class="playtime1">나의 레벨</div>
-			<div class="playtime2"><%=userLevel%></div>
+			<div class="gamepoint1">
+				<p>게임포인트</p>
+				<div class="gamepoint2"><%=totalGameRecord%></div>
+			</div>
+
+			<div class="playtime1">
+				<p>나의 레벨</p>
+				<div class="playtime2"><%=userLevel%></div>
+			</div>
+
 		</c:if>
 		<c:if test="${totalGameRecord == 0}">
 			<div class="gamepoint1">게임포인트</div>
@@ -89,12 +96,19 @@ pageContext.setAttribute("userRankings", userRankings);
 		</c:if>
 		<div class="line3"></div>
 		<div class="favourite">My FAVOURITE(수정예정)</div>
-		<div class="gamebox1">&nbsp;&nbsp;크로스 로드</div>
-		<div class="score1">score : 10</div>
-		<div class="rank1">rank : 8</div>
-		<div class="gamebox2">&nbsp;&nbsp;고기굽기 게임</div>
-		<div class="score2">score : 10</div>
-		<div class="rank2">rank : 8</div>
+		<div class="gamebox1">
+			<p>&nbsp;&nbsp;크로스 로드</p>
+			
+			<div class="score1">score : 10</div>
+			<div class="rank1">rank : 8</div>
+		</div>
+
+		<div class="gamebox2">
+			<p>&nbsp;&nbsp;고기굽기 게임</p>
+			<div class="score2">score : 10</div>
+			<div class="rank2">rank : 8</div>
+		</div>
+
 		<button class="modify">회원정보 수정</button>
 		<button class="main">메인화면</button>
 		<!-- <button class="main"></button> -->
