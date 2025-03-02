@@ -95,47 +95,316 @@ public class UsersController extends HttpServlet {
 				session.invalidate(); // 세션 초기화
 				response.sendRedirect("/index.jsp");
 			}
-			
-			
-			// 회원가입 요청
+			// 회원가입 처리 컨트롤러 부분 - 유효성 검사 개선
 			else if (cmd.trim().equals("/signup.users")) {
-				String id = request.getParameter("id");
-				String pw = request.getParameter("pw");
-				String nickname = request.getParameter("nickname");
-				String name = request.getParameter("name");
-				String email = request.getParameter("email");
-				String rnum = request.getParameter("rnum");
-				String phone = request.getParameter("phone");
+			    String id = request.getParameter("id");
+			    String pw = request.getParameter("pw");
+			    String nickname = request.getParameter("nickname");
+			    String name = request.getParameter("name");
+			    String email = request.getParameter("email");
+			    String rnum = request.getParameter("rnum");
+			    String phone = request.getParameter("phone");
+			    
+			    // 디버깅을 위한 로그 추가
+			    System.out.println("회원가입 요청 정보:");
+			    System.out.println("ID: " + id);
+			    System.out.println("닉네임: " + nickname);
+			    System.out.println("이름: " + name);
+			    System.out.println("이메일: " + email);
+			    System.out.println("생년월일: " + rnum);
+			    System.out.println("전화번호: " + phone);
+			    System.out.println("비밀번호 길이: " + (pw != null ? pw.length() : "null"));
 
-				if (dao.isDuplicate("id", id)) { // db id칼럼의 값이 id변수 값과 같을 경우
-					request.setAttribute("errorMsg", "이미 사용 중인 아이디입니다."); 
-				} else if (dao.isDuplicate("NICKNAME", nickname)) { // db nickname칼럼의 값이 nickname변수 값과 같을 경우
-					request.setAttribute("errorMsg", "이미 사용 중인 닉네임입니다.");
-				} else {
-					UsersDTO loginUser = new UsersDTO(id, pw, nickname, name, phone, email, rnum, 0, 0, 0, 0);
-					if (dao.signup(loginUser) > 0) {
-						// 회원가입 성공 후 세션 저장
-						HttpSession session = request.getSession();
-						session.setAttribute("loginUser", loginUser);
-						session.setAttribute("nickname", loginUser.getNickname());
-						session.setAttribute("id", loginUser.getId());
-						session.setAttribute("isAdmin", loginUser.getIsAdmin());
+			    try {
+			        // 서버측 유효성 검사 수행
+			        if (id == null || id.trim().isEmpty() || !id.matches("^[a-zA-Z][a-zA-Z0-9]{5,14}$")) {
+			            request.setAttribute("errorMsg", "아이디 형식이 올바르지 않습니다.");
+			            
+			            // 입력 정보 유지
+			            request.setAttribute("id", id);
+			            request.setAttribute("nickname", nickname);
+			            request.setAttribute("name", name);
+			            request.setAttribute("email", email);
+			            request.setAttribute("rnum", rnum);
+			            request.setAttribute("phone", phone);
+			            
+			            request.getRequestDispatcher("views/auth/signup.jsp").forward(request, response);
+			            return;
+			        }
+			        
+			        if (nickname == null || nickname.trim().isEmpty() || !nickname.matches("^[\\w가-힣]{1,9}$")) {
+			            request.setAttribute("errorMsg", "닉네임 형식이 올바르지 않습니다.");
+			            
+			            // 입력 정보 유지
+			            request.setAttribute("id", id);
+			            request.setAttribute("nickname", nickname);
+			            request.setAttribute("name", name);
+			            request.setAttribute("email", email);
+			            request.setAttribute("rnum", rnum);
+			            request.setAttribute("phone", phone);
+			            
+			            request.getRequestDispatcher("views/auth/signup.jsp").forward(request, response);
+			            return;
+			        }
+			        
+			        if (name == null || name.trim().isEmpty() || !name.matches("^[가-힣]{2,5}$")) {
+			            request.setAttribute("errorMsg", "이름 형식이 올바르지 않습니다.");
+			            
+			            // 입력 정보 유지
+			            request.setAttribute("id", id);
+			            request.setAttribute("nickname", nickname);
+			            request.setAttribute("name", name);
+			            request.setAttribute("email", email);
+			            request.setAttribute("rnum", rnum);
+			            request.setAttribute("phone", phone);
+			            
+			            request.getRequestDispatcher("views/auth/signup.jsp").forward(request, response);
+			            return;
+			        }
+			        
+			        if (phone == null || phone.trim().isEmpty() || !phone.matches("^01[0|1|6|7|8|9][- ]?\\d{3,4}[- ]?\\d{4}$")) {
+			            request.setAttribute("errorMsg", "전화번호 형식이 올바르지 않습니다.");
+			            
+			            // 입력 정보 유지
+			            request.setAttribute("id", id);
+			            request.setAttribute("nickname", nickname);
+			            request.setAttribute("name", name);
+			            request.setAttribute("email", email);
+			            request.setAttribute("rnum", rnum);
+			            request.setAttribute("phone", phone);
+			            
+			            request.getRequestDispatcher("views/auth/signup.jsp").forward(request, response);
+			            return;
+			        }
+			        
+			        // 이메일 확인 및 조합
+			        if (email == null || email.trim().isEmpty()) {
+			            // emailId와 emailDomain을 직접 받아 결합
+			            String emailId = request.getParameter("emailId");
+			            String emailDomain = request.getParameter("emailDomain");
+			            
+			            if (emailId != null && !emailId.trim().isEmpty() && 
+			                emailDomain != null && !emailDomain.trim().isEmpty()) {
+			                email = emailId + "@" + emailDomain;
+			                System.out.println("이메일 조합: " + email);
+			            }
+			        }
+			        
+			        // 이메일 유효성 검사
+			        if (email == null || email.trim().isEmpty() || !email.matches("^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$")) {
+			            request.setAttribute("errorMsg", "이메일 형식이 올바르지 않습니다.");
+			            
+			            // 입력 정보 유지
+			            request.setAttribute("id", id);
+			            request.setAttribute("nickname", nickname);
+			            request.setAttribute("name", name);
+			            request.setAttribute("email", email);
+			            request.setAttribute("rnum", rnum);
+			            request.setAttribute("phone", phone);
+			            
+			            request.getRequestDispatcher("views/auth/signup.jsp").forward(request, response);
+			            return;
+			        }
+			        
+			        // 생년월일 유효성 검사
+			        if (rnum == null || rnum.trim().isEmpty() || !UsersDTO.isValidRnum(rnum)) {
+			            request.setAttribute("errorMsg", "생년월일이 유효하지 않습니다.");
+			            
+			            // 입력 정보 유지
+			            request.setAttribute("id", id);
+			            request.setAttribute("nickname", nickname);
+			            request.setAttribute("name", name);
+			            request.setAttribute("email", email);
+			            request.setAttribute("rnum", rnum);
+			            request.setAttribute("phone", phone);
+			            
+			            request.getRequestDispatcher("views/auth/signup.jsp").forward(request, response);
+			            return;
+			        }
+			        
+			        // 비밀번호 필드 검사 (클라이언트에서 이미 해시되어 전송됨)
+			        if (pw == null || pw.trim().isEmpty()) {
+			            request.setAttribute("errorMsg", "비밀번호가 누락되었습니다.");
+			            
+			            // 입력 정보 유지
+			            request.setAttribute("id", id);
+			            request.setAttribute("nickname", nickname);
+			            request.setAttribute("name", name);
+			            request.setAttribute("email", email);
+			            request.setAttribute("rnum", rnum);
+			            request.setAttribute("phone", phone);
+			            
+			            request.getRequestDispatcher("views/auth/signup.jsp").forward(request, response);
+			            return;
+			        }
+			        
+			        // SHA-256으로 해시된 비밀번호는 64자리의 16진수 문자열
+			        if (pw.length() != 64 || !pw.matches("[0-9a-fA-F]{64}")) {
+			            System.out.println("비밀번호 해시가 유효하지 않습니다. 길이: " + pw.length());
+			            request.setAttribute("errorMsg", "비밀번호 형식이 유효하지 않습니다.");
+			            
+			            // 입력 정보 유지
+			            request.setAttribute("id", id);
+			            request.setAttribute("nickname", nickname);
+			            request.setAttribute("name", name);
+			            request.setAttribute("email", email);
+			            request.setAttribute("rnum", rnum);
+			            request.setAttribute("phone", phone);
+			            
+			            request.getRequestDispatcher("views/auth/signup.jsp").forward(request, response);
+			            return;
+			        }
 
-						// 회원가입 성공 시
-						request.getRequestDispatcher("/index.jsp").forward(request, response);
-
-						return;
-					} else {
-						System.out.println("회원가입 실패");
-					}
-					request.setAttribute("id", id);
-					request.setAttribute("nickname", nickname);
-					request.setAttribute("name", name);
-					request.setAttribute("email", email);
-					request.setAttribute("rnum", rnum);
-					request.setAttribute("phone", phone);
-					request.getRequestDispatcher("views/auth/signup.jsp").forward(request, response);
-				}
+			        // 중복 검사
+			        if (dao.isDuplicate("ID", id)) {
+			            request.setAttribute("errorMsg", "이미 사용 중인 아이디입니다.");
+			            
+			            // 입력 정보 유지
+			            request.setAttribute("id", id);
+			            request.setAttribute("nickname", nickname);
+			            request.setAttribute("name", name);
+			            request.setAttribute("email", email);
+			            request.setAttribute("rnum", rnum);
+			            request.setAttribute("phone", phone);
+			            
+			            request.getRequestDispatcher("views/auth/signup.jsp").forward(request, response);
+			            return;
+			        } else if (dao.isDuplicate("NICKNAME", nickname)) {
+			            request.setAttribute("errorMsg", "이미 사용 중인 닉네임입니다.");
+			            
+			            // 입력 정보 유지
+			            request.setAttribute("id", id);
+			            request.setAttribute("nickname", nickname);
+			            request.setAttribute("name", name);
+			            request.setAttribute("email", email);
+			            request.setAttribute("rnum", rnum);
+			            request.setAttribute("phone", phone);
+			            
+			            request.getRequestDispatcher("views/auth/signup.jsp").forward(request, response);
+			            return;
+			        } else if (dao.isDuplicate("EMAIL", email)) {
+			            request.setAttribute("errorMsg", "이미 사용 중인 이메일입니다.");
+			            
+			            // 입력 정보 유지
+			            request.setAttribute("id", id);
+			            request.setAttribute("nickname", nickname);
+			            request.setAttribute("name", name);
+			            request.setAttribute("email", email);
+			            request.setAttribute("rnum", rnum);
+			            request.setAttribute("phone", phone);
+			            
+			            request.getRequestDispatcher("views/auth/signup.jsp").forward(request, response);
+			            return;
+			        } else {
+			            // 모든 유효성 검증 통과 - 회원가입 진행
+			            UsersDTO loginUser = new UsersDTO(id, pw, nickname, name, phone, email, rnum, 0, 0, 0, 0);
+			            
+			            try {
+			                System.out.println("회원가입 시도: DB 저장 직전");
+			                int result = dao.signup(loginUser);
+			                System.out.println("회원가입 결과: " + result);
+			                
+			                if (result > 0) {
+			                    // 회원가입 성공 - DB에서 사용자 정보 조회
+			                    try {
+			                        // 새로 추가한 findUserAfterSignup 메서드 사용
+			                        UsersDTO newUser = dao.findUserAfterSignup(id);
+			                        
+			                        if (newUser != null) {
+			                            // 세션에 사용자 정보 저장
+			                            HttpSession session = request.getSession();
+			                            session.setAttribute("loginUser", newUser);
+			                            session.setAttribute("nickname", newUser.getNickname());
+			                            session.setAttribute("id", newUser.getId());
+			                            session.setAttribute("isAdmin", newUser.getIsAdmin());
+			                            
+			                            // 로그인 시간 기록 업데이트
+			                            dao.insertLastLogin(id);
+			                            
+			                            // 회원가입 성공 메시지 설정
+			                            session.setAttribute("successMsg", "회원가입에 성공했습니다!");
+			                            
+			                            // 회원가입 성공 시 메인 페이지로 리다이렉트
+			                            response.sendRedirect(request.getContextPath() + "/index.jsp");
+			                        } else {
+			                            // 사용자 찾기 실패 시 기본 정보로 세션 설정
+			                            System.out.println("신규 가입 사용자 조회 실패, 기본 정보 사용");
+			                            HttpSession session = request.getSession();
+			                            session.setAttribute("loginUser", loginUser);
+			                            session.setAttribute("nickname", loginUser.getNickname());
+			                            session.setAttribute("id", loginUser.getId());
+			                            session.setAttribute("isAdmin", loginUser.getIsAdmin());
+			                            
+			                            // 회원가입 성공 메시지 설정
+			                            session.setAttribute("successMsg", "회원가입에 성공했습니다!");
+			                            
+			                            // 회원가입 성공 시 메인 페이지로 리다이렉트
+			                            response.sendRedirect(request.getContextPath() + "/index.jsp");
+			                        }
+			                        return;
+			                    } catch (Exception e) {
+			                        System.out.println("사용자 정보 조회 실패: " + e.getMessage());
+			                        e.printStackTrace();
+			                        
+			                        // 기본 정보로 세션 설정
+			                        HttpSession session = request.getSession();
+			                        session.setAttribute("loginUser", loginUser);
+			                        session.setAttribute("nickname", loginUser.getNickname());
+			                        session.setAttribute("id", loginUser.getId());
+			                        session.setAttribute("isAdmin", loginUser.getIsAdmin());
+			                        
+			                        // 회원가입 성공 메시지 설정
+			                        session.setAttribute("successMsg", "회원가입에 성공했습니다!");
+			                        
+			                        // 회원가입 성공 시 메인 페이지로 리다이렉트
+			                        response.sendRedirect(request.getContextPath() + "/index.jsp");
+			                        return;
+			                    }
+			                } else {
+			                    // DB 삽입 실패
+			                    System.out.println("회원가입 실패 - DB 오류");
+			                    request.setAttribute("errorMsg", "회원가입에 실패했습니다. 다시 시도해주세요.");
+			                    
+			                    // 회원가입 실패 시 입력 정보 유지하여 폼으로 돌아감
+			                    request.setAttribute("id", id);
+			                    request.setAttribute("nickname", nickname);
+			                    request.setAttribute("name", name);
+			                    request.setAttribute("email", email);
+			                    request.setAttribute("rnum", rnum);
+			                    request.setAttribute("phone", phone);
+			                    request.getRequestDispatcher("views/auth/signup.jsp").forward(request, response);
+			                }
+			            } catch (Exception e) {
+			                System.out.println("회원가입 DB 처리 중 오류: " + e.getMessage());
+			                e.printStackTrace();
+			                request.setAttribute("errorMsg", "회원가입 처리 중 오류가 발생했습니다: " + e.getMessage());
+			                
+			                // 입력 정보 유지
+			                request.setAttribute("id", id);
+			                request.setAttribute("nickname", nickname);
+			                request.setAttribute("name", name);
+			                request.setAttribute("email", email);
+			                request.setAttribute("rnum", rnum);
+			                request.setAttribute("phone", phone);
+			                
+			                request.getRequestDispatcher("views/auth/signup.jsp").forward(request, response);
+			            }
+			        }
+			    } catch (Exception e) {
+			        System.out.println("회원가입 처리 중 오류 발생: " + e.getMessage());
+			        e.printStackTrace();
+			        request.setAttribute("errorMsg", "오류가 발생했습니다: " + e.getMessage());
+			        
+			        // 입력 정보 유지
+			        request.setAttribute("id", id);
+			        request.setAttribute("nickname", nickname);
+			        request.setAttribute("name", name);
+			        request.setAttribute("email", email);
+			        request.setAttribute("rnum", rnum);
+			        request.setAttribute("phone", phone);
+			        
+			        request.getRequestDispatcher("views/auth/signup.jsp").forward(request, response);
+			    }  
 			}
 			// 아이디 찾기 기능
 			else if (cmd.equals("/findId.users")) {

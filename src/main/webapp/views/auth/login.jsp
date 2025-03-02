@@ -57,13 +57,11 @@
 			<div class="with">Or sign in with</div>
 
 			<div class="google-login">
-				<button>Google 계정으로 로그인</button>
+				<a href="/login.google">
+					<button>Google 계정으로 로그인</button>
+				</a>
 			</div>
-
-
 		</div>
-
-
 
 
 		<div class="right">

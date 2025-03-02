@@ -164,7 +164,7 @@
                                                         <% } else { %>
                                                             <div class="chat-interface">
                                                                 <div class="chat-messages">
-                                                                    <div class="message">실시간 채팅을 이용해보세요!</div>
+                                                                    <div class="message">로그인 후 실시간 채팅을 이용해보세요!</div>
                                                                 </div>
                                                                 <div class="message-input">
                                                                     <input type="text" placeholder="Message">

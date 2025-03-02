@@ -1,11 +1,14 @@
 package auth.controller;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Properties;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -25,9 +28,6 @@ import auth.dto.UsersDTO;
 
 @WebServlet("/auth/callback")
 public class GoogleCallback extends HttpServlet {
-	private static final String CLIENT_ID = "46682588205-mko9vul9elog285487mklc827ef615sn.apps.googleusercontent.com";
-	private static final String CLIENT_SECRET = "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";
-	private static final String REDIRECT_URI = "http://localhost:80/auth/callback";
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -37,13 +37,27 @@ public class GoogleCallback extends HttpServlet {
 	            response.getWriter().write("Google 로그인 실패");
 	            return;
 	        }
+	        
+	        Properties prop = new Properties();
+	        InputStream input = getClass().getClassLoader().getResourceAsStream("config.properties");
 
+	        if (input == null) {
+	            throw new FileNotFoundException("설정 파일을 찾을 수 없습니다: config.properties");
+	        }
+
+	        prop.load(input);
+	        input.close();
+
+	        String clientId = prop.getProperty("google.client.id");
+	        String clientSecret = prop.getProperty("google.client.secret");
+	        String clientRedirection = prop.getProperty("google.redirect.uri");
+	        
 	        // 1. Google OAuth 토큰 요청
 	        String tokenUrl = "https://oauth2.googleapis.com/token";
 	        String params = "code=" + code +
-	                        "&client_id=" + CLIENT_ID +
-	                        "&client_secret=" + CLIENT_SECRET +
-	                        "&redirect_uri=" + REDIRECT_URI +
+	                        "&client_id=" + clientId +
+	                        "&client_secret=" + clientSecret +
+	                        "&redirect_uri=" + clientRedirection +
 	                        "&grant_type=authorization_code";
 
 	        JSONObject tokenResponse = getAccessToken(tokenUrl, params);
@@ -94,9 +108,7 @@ public class GoogleCallback extends HttpServlet {
 				// TODO Auto-generated catch block
 				System.out.println("유저 찾는 도중 실패");
 				e.printStackTrace();
-			} 
-
-	        
+			}
 
 	        // 4. 세션에 사용자 정보 저장
 	        HttpSession session = request.getSession();

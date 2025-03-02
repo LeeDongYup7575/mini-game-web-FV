@@ -72,26 +72,146 @@ public class UsersDAO {
 		return false;
 	}
 
-	// 회원가입 메서드
+	// 회원가입 메서드 - 자세한 디버깅 로그 추가 및 예외 처리 강화
 	public int signup(UsersDTO dto) throws Exception {
-		if (dto.getId().startsWith("google_") && dto.getPw() == null) {
-			dto.setPw("GOOGLE_USER"); // 기본값 설정
-		}
-		String sql = "INSERT INTO users(id, pw, nickname, name, phone, email, rnum, joindate, warningcount, withdraw, status, isadmin, lastLogin) "
-				+ "VALUES(?, ?, ?, ?, ?, ?, ?, sysdate, 0, 0, 0, 0, sysdate)";
+	    // 디버깅 로그 추가
+	    System.out.println("회원가입 시도 (DAO): " + dto.getId() + ", " + dto.getNickname() + ", " + dto.getEmail());
+	    System.out.println("비밀번호 길이: " + (dto.getPw() != null ? dto.getPw().length() : "null"));
 
-		try (Connection conn = getConnection(); PreparedStatement pstat = conn.prepareStatement(sql)) {
+	    // Google 계정 처리
+	    if (dto.getId().startsWith("google_") && dto.getPw() == null) {
+	        dto.setPw("GOOGLE_USER"); // 기본값 설정
+	    }
 
-			pstat.setString(1, dto.getId());
-			pstat.setString(2, dto.getPw());
-			pstat.setString(3, dto.getNickname());
-			pstat.setString(4, dto.getName());
-			pstat.setString(5, dto.getPhone());
-			pstat.setString(6, dto.getEmail());
-			pstat.setString(7, dto.getRnum());
+	    Connection conn = null;
+	    PreparedStatement pstat = null;
+	    
+	    try {
+	        conn = getConnection();
+	        System.out.println("데이터베이스 연결 성공");
+	        
+	        // 자동 커밋 설정 확인
+	        boolean autoCommit = conn.getAutoCommit();
+	        System.out.println("자동 커밋 설정: " + autoCommit);
+	        
+	        // 필요시 자동 커밋 활성화
+	        if (!autoCommit) {
+	            conn.setAutoCommit(true);
+	            System.out.println("자동 커밋 활성화함");
+	        }
+	        
+	        // 실제 DB 테이블 구조에 맞게 SQL 쿼리 작성
+	        String sql = "INSERT INTO users(id, pw, nickname, name, phone, email, rnum, joindate, warningcount, withdraw, status, isadmin, lastlogin) "
+	                + "VALUES(?, ?, ?, ?, ?, ?, ?, sysdate, 0, 0, 0, 0, sysdate)";
+	        
+	        System.out.println("실행할 SQL: " + sql);
+	        pstat = conn.prepareStatement(sql);
+	        System.out.println("PreparedStatement 생성 성공");
 
-			return pstat.executeUpdate();
-		}
+	        pstat.setString(1, dto.getId());
+	        pstat.setString(2, dto.getPw());
+	        pstat.setString(3, dto.getNickname());
+	        pstat.setString(4, dto.getName());
+	        pstat.setString(5, dto.getPhone());
+	        pstat.setString(6, dto.getEmail());
+	        pstat.setString(7, dto.getRnum());
+	        System.out.println("파라미터 바인딩 완료");
+	        
+	        System.out.println("파라미터 값:");
+	        System.out.println("ID: " + dto.getId());
+	        System.out.println("PW: " + (dto.getPw() != null ? "해시된 값 (길이: " + dto.getPw().length() + ")" : "null"));
+	        System.out.println("Nickname: " + dto.getNickname());
+	        System.out.println("Name: " + dto.getName());
+	        System.out.println("Phone: " + dto.getPhone());
+	        System.out.println("Email: " + dto.getEmail());
+	        System.out.println("Rnum: " + dto.getRnum());
+
+	        int result = pstat.executeUpdate();
+	        System.out.println("회원가입 결과: " + result + "행 삽입됨");
+	        
+	        return result;
+	    } catch (SQLException e) {
+	        System.out.println("회원가입 SQL 오류: " + e.getMessage());
+	        System.out.println("SQL 상태: " + e.getSQLState());
+	        System.out.println("에러 코드: " + e.getErrorCode());
+	        e.printStackTrace();
+	        throw e;
+	    } catch (Exception e) {
+	        System.out.println("회원가입 일반 오류: " + e.getMessage());
+	        e.printStackTrace();
+	        throw e;
+	    } finally {
+	        // 리소스 해제
+	        try {
+	            if (pstat != null) pstat.close();
+	            if (conn != null) conn.close();
+	            System.out.println("리소스 정상 해제됨");
+	        } catch (SQLException e) {
+	            System.out.println("리소스 해제 중 오류: " + e.getMessage());
+	            e.printStackTrace();
+	        }
+	    }
+	}
+
+	// 회원가입 후 사용자 정보 조회 (컨트롤러에서 사용)
+	public UsersDTO findUserAfterSignup(String id) throws Exception {
+	    System.out.println("findUserAfterSignup 호출: " + id);
+	    UsersDTO user = null;
+	    
+	    Connection con = null;
+	    PreparedStatement pstat = null;
+	    ResultSet rs = null;
+
+	    try {
+	        con = this.getConnection();
+	        System.out.println("DB 연결 성공 (사용자 조회)");
+	        
+	        String sql = "SELECT * FROM USERS WHERE ID = ?";
+	        pstat = con.prepareStatement(sql);
+	        pstat.setString(1, id);
+	        System.out.println("사용자 조회 SQL 준비됨: " + sql);
+
+	        rs = pstat.executeQuery();
+	        System.out.println("쿼리 실행 완료");
+	        
+	        if (rs.next()) {
+	            // 회원가입에서 사용한 생성자 순서와 일치하게 객체 생성
+	            user = new UsersDTO(
+	                rs.getString("ID"), 
+	                rs.getString("PW"), 
+	                rs.getString("NICKNAME"),
+	                rs.getString("NAME"), 
+	                rs.getString("PHONE"), 
+	                rs.getString("EMAIL"), 
+	                rs.getString("RNUM"),
+	                rs.getInt("WARNINGCOUNT"), 
+	                rs.getInt("WITHDRAW"), 
+	                rs.getInt("STATUS"),
+	                rs.getInt("ISADMIN")
+	            );
+	            System.out.println("회원가입 후 사용자 조회 성공: " + user.getId() + ", " + user.getNickname());
+	        } else {
+	            System.out.println("회원가입 후 사용자를 찾을 수 없음: " + id);
+	        }
+	    } catch (SQLException e) {
+	        System.out.println("회원가입 후 사용자 조회 SQL 오류: " + e.getMessage());
+	        System.out.println("SQL 상태: " + e.getSQLState());
+	        System.out.println("에러 코드: " + e.getErrorCode());
+	        e.printStackTrace();
+	    } catch (Exception e) {
+	        System.out.println("회원가입 후 사용자 조회 일반 오류: " + e.getMessage());
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            if (rs != null) rs.close();
+	            if (pstat != null) pstat.close();
+	            if (con != null) con.close();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+
+	    return user;
 	}
 
 	// selectAll
@@ -321,4 +441,5 @@ public class UsersDAO {
 			pstat.executeUpdate();
 		}
 	}
+
 }
