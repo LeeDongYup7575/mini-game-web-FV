@@ -278,9 +278,6 @@ $(".main").on("click",()=>{
 	</div>
 
 	<script> 
-	
-	
-	
 				$("#gameicon").on("click", () => {
 				    $(".container2").css("display", "none");
 				    $(".container3").css("display", "block");

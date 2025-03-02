@@ -88,13 +88,18 @@ public class UsersController extends HttpServlet {
 
 				response.sendRedirect(request.getContextPath() + "/index.jsp"); // 로그아웃 후 메인 페이지로 이동
 			}else if (cmd.trim().equals("/withdraw.users")) {
-				String withdrawId = request.getParameter("withdrawId");
-				
-				dao.withdraw(withdrawId);
-				HttpSession session = request.getSession();
-				session.invalidate(); // 세션 초기화
-				response.sendRedirect("/index.jsp");
-			}
+				  String withdrawId = request.getParameter("withdrawId");
+				  
+				  if(withdrawId != null && !withdrawId.isEmpty()) {
+				    dao.withdraw(withdrawId);
+				    HttpSession session = request.getSession();
+				    session.invalidate(); // 세션 초기화
+				    response.sendRedirect("/index.jsp");
+				  } else {
+				    // 오류 처리 - withdrawId가 없는 경우
+				    response.sendRedirect("/error.jsp");
+				  }
+				}
 			// 회원가입 처리 컨트롤러 부분 - 유효성 검사 개선
 			else if (cmd.trim().equals("/signup.users")) {
 			    String id = request.getParameter("id");
@@ -405,6 +410,10 @@ public class UsersController extends HttpServlet {
 			        
 			        request.getRequestDispatcher("views/auth/signup.jsp").forward(request, response);
 			    }  
+			}
+			else if(cmd.equals("/tosignup.users")) {
+				
+				request.getRequestDispatcher("views/auth/signup.jsp").forward(request, response);
 			}
 			// 아이디 찾기 기능
 			else if (cmd.equals("/findId.users")) {

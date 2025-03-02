@@ -212,7 +212,7 @@ button:last-of-type:hover {
 			if (terms1.checked && terms2.checked) {
 				alert('회원가입 창으로 이동합니다.');
 				// 다음 단계로 넘어갈 페이지
-				window.location.href = 'signup.jsp';
+				window.location.href = '/tosignup.users';
 			} else {
 				alert('모든 필수 약관에 동의해야 합니다.');
 			}

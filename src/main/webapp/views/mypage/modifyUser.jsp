@@ -14,7 +14,9 @@ if (loginUser == null) {
 <!DOCTYPE html>
 <html>
 <head>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
+<link
+	href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap"
+	rel="stylesheet">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TechX Games - 회원정보 수정</title>
@@ -45,9 +47,9 @@ body {
 	cursor: pointer;
 }
 
-.logo img{
-	width:100%;
-	height:100%;
+.logo img {
+	width: 100%;
+	height: 100%;
 }
 
 .container {
@@ -151,86 +153,118 @@ button:hover {
 	margin-left: 10px;
 	margin-top: 0;
 }
-#withdraw-btn{
-	position:absolute;
-	width:80px;
-	top:850px;
-	left:1500px;
-	background-color:#868789;
+
+#withdraw-btn {
+	position: absolute;
+	width: 80px;
+	top: 850px;
+	left: 1500px;
+	background-color: #868789;
 }
 
 @media screen and (max-width: 768px) {
-	.container{width: 90%;}
-
-	#withdraw-btn{
+	.container {
+		width: 90%;
+	}
+	#withdraw-btn {
 		position: relative;
 		top: auto;
 		left: auto;
 	}
 }
 
+.email-container {
+	display: flex;
+	align-items: center;
+}
+
+.email-container input {
+	flex: 1;
+}
+
+.email-container button {
+	width: auto;
+	margin-left: 10px;
+	margin-top: 0;
+}
 </style>
 </head>
 <body>
 	<div class="wrapper">
 		<div class="logo">
-			<a href="/">
-                <img class="logo-img" src="/assets/img/logoW.png" alt="TechX Logo" />
-            </a>
+			<a href="/"> <img class="logo-img" src="/assets/img/logoW.png"
+				alt="TechX Logo" />
+			</a>
 		</div>
 		<div class="container">
-		<h2>회원정보 수정</h2>
-		<form id="modifyForm" action="/info.mypage">
-			<div class="form-group">
-				<label for="userId">아이디</label> <input type="text" id="userId"
-					name="userId" value="<%=loginUser.getId()%>" readonly>
-			</div>
-			<div class="form-group">
-				<label for="userName">이름</label> <input type="text" id="userName"
-					name="userName" value="<%=loginUser.getName()%>">
-				<div id="userNameError" class="error-msg"></div>
-			</div>
-			<div class="form-group">
-				<label for="userNickname">닉네임</label>
-				<div class="nickname-container">
-					<input type="text" id="userNickname" name="userNickname"
-						value="<%=loginUser.getNickname()%>">
-					<button type="button" id="checkNickname" class="check-button">중복확인</button>
+			<h2>회원정보 수정</h2>
+			<form id="modifyForm" action="/info.mypage">
+				<div class="form-group">
+					<label for="userId">아이디</label> <input type="text" id="userId"
+						name="userId" value="<%=loginUser.getId()%>" readonly>
 				</div>
-				<div id="userNicknameError" class="error-msg"></div>
-				<div id="userNicknameSuccess" class="success-msg"></div>
-			</div>
-			<div class="form-group">
-				<label for="userEmail">이메일</label> <input type="email"
-					id="userEmail" name="userEmail" value="<%=loginUser.getEmail()%>">
-				<div id="userEmailError" class="error-msg"></div>
-			</div>
-			<div class="form-group">
-				<label for="userPhone">핸드폰 번호</label> <input type="text"
-					id="userPhone" name="userPhone" value="<%=loginUser.getPhone()%>">
-				<div id="userPhoneError" class="error-msg"></div>
-			</div>
-			<div class="form-group">
-				<label for="userRnum">생년월일</label> <input type="text" id="userRnum"
-					name="userRnum" value="<%=loginUser.getRnum()%>">
-				<div id="userRnumError" class="error-msg"></div>
-			</div>
-			<button type="submit" class="modify-btn">수정하기</button>
-			<button type="button" class="mypage" onclick="location.href='/info.mypage'">마이페이지로</button>
-		</form>
-		<form id="withdraw-frm" action="/withdraw.users">
-			<input type="hidden" name="withdrawId" id="hiddenWithdrawId" />
-			<button type="button" id=withdraw-btn>탈퇴하기</button>
-		</form>
+				<div class="form-group">
+					<label for="userName">이름</label> <input type="text" id="userName"
+						name="userName" value="<%=loginUser.getName()%>">
+					<div id="userNameError" class="error-msg"></div>
+				</div>
+				<div class="form-group">
+					<label for="userNickname">닉네임</label>
+					<div class="nickname-container">
+						<input type="text" id="userNickname" name="userNickname"
+							value="<%=loginUser.getNickname()%>">
+						<button type="button" id="checkNickname" class="check-button">중복확인</button>
+					</div>
+					<div id="userNicknameError" class="error-msg"></div>
+					<div id="userNicknameSuccess" class="success-msg"></div>
+				</div>
+				<div class="form-group">
+					<label for="userEmail">이메일</label>
+					<div class="email-container">
+						<input type="email" id="userEmail" name="userEmail"
+							value="<%=loginUser.getEmail()%>">
+						<%
+						if (!loginUser.getId().startsWith("google_")) {
+						%>
+						<button type="button" id="checkEmail" class="check-button">중복확인</button>
+						<%
+						}
+						%>
+					</div>
+					<div id="userEmailError" class="error-msg"></div>
+					<div id="userEmailSuccess" class="success-msg"></div>
+				</div>
+				<div class="form-group">
+					<label for="userPhone">핸드폰 번호</label> <input type="text"
+						id="userPhone" name="userPhone" value="<%=loginUser.getPhone()%>">
+					<div id="userPhoneError" class="error-msg"></div>
+				</div>
+				<div class="form-group">
+					<label for="userRnum">생년월일</label> <input type="text" id="userRnum"
+						name="userRnum" value="<%=loginUser.getRnum()%>">
+					<div id="userRnumError" class="error-msg"></div>
+				</div>
+				<button type="submit" class="modify-btn">수정하기</button>
+				<button type="button" class="mypage"
+					onclick="location.href='/info.mypage'">마이페이지로</button>
+			</form>
+			<form id="withdraw-frm" action="/withdraw.users" method="post">
+				<input type="hidden" name="withdrawId" id="hiddenWithdrawId"
+					value="<%=loginUser.getId()%>" />
+				<button type="button" id="withdraw-btn" onclick="confirmWithdraw()">탈퇴하기</button>
+			</form>
 
-		<p class="error" id="errorMsg"></p>
-		<p class="success" id="successMsg"></p>
-	</div>
+			<p class="error" id="errorMsg"></p>
+			<p class="success" id="successMsg"></p>
+		</div>
 	</div>
 
 	<script>
+	
 	$(document).ready(function () {
 	    // 정규식 설정
+	    const idRegex = /^(?!google_)[a-zA-Z][a-zA-Z0-9]{5,14}$/;
+	    const pwRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*]).{8,}$/;
 	    const nameRegex = /^[가-힣]{2,5}$/;
 	    const nicknameRegex = /^[\w가-힣]{1,9}$/;
 	    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -244,7 +278,8 @@ button:hover {
 	        userEmail: true,
 	        userPhone: true,
 	        userRnum: true,
-	        nicknameChecked: false // 닉네임 중복 검사 여부
+	        nicknameChecked: false, // 닉네임 중복 검사 여부
+	        emailChecked: false // 이메일 중복 검사 여부
 	    };
 
 	    // 구글 로그인 사용자인지 확인
@@ -255,37 +290,76 @@ button:hover {
 	        $("#userEmail").prop("readonly", true);
 	        $("<div class='info-msg'>구글 계정으로 로그인한 경우 이메일을 변경할 수 없습니다.</div>")
 	            .insertAfter("#userEmailError");
+	        validationState.emailChecked = true; // 구글 사용자는 이메일 중복 검사 필요 없음
 	    }
 
-	    // 실시간 유효성 검사 함수
-	    function validateInput(field, regex, errorMsg) {
+	 // 수정된 유효성 검사 함수
+	    function validateInput(field, validator, defaultErrorMsg) {
 	        const $input = $(field);
 	        const $errorDiv = $(`#${field.slice(1)}Error`);
 	        
 	        $input.on("input", function () {
 	            const value = $(this).val().trim();
 	            
-	            if (value === "") {
-	                $errorDiv.hide();
-	                validationState[field.slice(1)] = true;
-	                return;
-	            }
-	            
-	            if (regex.test(value)) {
-	                $errorDiv.removeClass("error-msg").addClass("success-msg").text("올바른 형식입니다.").show();
-	                validationState[field.slice(1)] = true;
-	                
-	                if (field === "#userNickname") {
-	                    if (value !== "<%=loginUser.getNickname()%>") {
-	                        validationState.nicknameChecked = false;
-	                        $("#userNicknameSuccess").hide();
+	            // validator가 함수인 경우 실행 결과를 얻음
+	            let validationResult;
+	            if (typeof validator === 'function') {
+	                validationResult = validator(value);
+	                // 함수가 객체를 반환하는 경우와 불리언을 반환하는 경우 처리
+	                if (typeof validationResult === 'object') {
+	                    if (validationResult.isValid) {
+	                        $errorDiv.removeClass("error-msg").addClass("success-msg").text(validationResult.message || "올바른 형식입니다.").show();
+	                        validationState[field.slice(1)] = true;
 	                    } else {
-	                        validationState.nicknameChecked = true;
+	                        $errorDiv.removeClass("success-msg").addClass("error-msg").text(validationResult.message || defaultErrorMsg).show();
+	                        validationState[field.slice(1)] = false;
+	                    }
+	                } else {
+	                    if (validationResult) {
+	                        $errorDiv.removeClass("error-msg").addClass("success-msg").text("올바른 형식입니다.").show();
+	                        validationState[field.slice(1)] = true;
+	                    } else {
+	                        // 빈 값인 경우 특별 처리
+	                        if (value === "" && field === "#userRnum") {
+	                            $errorDiv.removeClass("success-msg").addClass("error-msg").text("생년월일은 필수 입력 항목입니다.").show();
+	                        } else {
+	                            $errorDiv.removeClass("success-msg").addClass("error-msg").text(defaultErrorMsg).show();
+	                        }
+	                        validationState[field.slice(1)] = false;
 	                    }
 	                }
-	            } else {
-	                $errorDiv.removeClass("success-msg").addClass("error-msg").text(errorMsg).show();
-	                validationState[field.slice(1)] = false;
+	            } else { // 정규식인 경우
+	                if (value === "" && field === "#userRnum") {
+	                    $errorDiv.removeClass("success-msg").addClass("error-msg").text("생년월일은 필수 입력 항목입니다.").show();
+	                    validationState[field.slice(1)] = false;
+	                } else if (value === "") {
+	                    $errorDiv.hide();
+	                    validationState[field.slice(1)] = true;
+	                } else if (validator.test(value)) {
+	                    $errorDiv.removeClass("error-msg").addClass("success-msg").text("올바른 형식입니다.").show();
+	                    validationState[field.slice(1)] = true;
+	                } else {
+	                    $errorDiv.removeClass("success-msg").addClass("error-msg").text(defaultErrorMsg).show();
+	                    validationState[field.slice(1)] = false;
+	                }
+	            }
+	            
+	            // 닉네임과 이메일에 대한 특별 처리 (기존 코드 유지)
+	            if (field === "#userNickname") {
+	                if (value !== "<%=loginUser.getNickname()%>") {
+	                    validationState.nicknameChecked = false;
+	                    $("#userNicknameSuccess").hide();
+	                } else {
+	                    validationState.nicknameChecked = true;
+	                }
+	            }
+	            
+	            if (field === "#userEmail") {
+	                if (value !== "<%=loginUser.getEmail()%>") {
+	                    validationState.emailChecked = false;
+	                } else {
+	                    validationState.emailChecked = true;
+	                }
 	            }
 	        });
 
@@ -297,7 +371,69 @@ button:hover {
 	    validateInput("#userNickname", nicknameRegex, "닉네임은 한글, 영문, 숫자로 1~9자여야 합니다.");
 	    validateInput("#userEmail", emailRegex, "올바른 이메일 형식이 아닙니다.");
 	    validateInput("#userPhone", phoneRegex, "전화번호 형식이 올바르지 않습니다.");
-	    validateInput("#userRnum", rnumRegex, "생년월일은 6자리 숫자여야 합니다.");
+	 // 생년월일에 대한 수정된 유효성 검사
+	    // 생년월일에 대한 수정된 유효성 검사
+validateInput("#userRnum", function(value) {
+    // 빈 값이면 유효하지 않음 (필수 필드)
+    if (value === "") {
+        return {
+            isValid: false,
+            message: "생년월일은 필수 입력 항목입니다."
+        };
+    }
+    
+    // 6자리 숫자인지 확인
+    const rnumRegex = /^\d{6}$/;
+    if (!rnumRegex.test(value)) {
+        return {
+            isValid: false,
+            message: "생년월일은 6자리 숫자로 입력해주세요. (YYMMDD)"
+        };
+    }
+    
+    // 유효한 생년월일인지 추가 검사
+    const year = parseInt(value.substring(0, 2));
+    const month = parseInt(value.substring(2, 4));
+    const day = parseInt(value.substring(4, 6));
+    
+    // 현재 날짜와 비교
+    const currentDate = new Date();
+    const currentYear = currentDate.getFullYear() % 100; // 현재 연도의 마지막 두 자리
+    const currentMonth = currentDate.getMonth() + 1; // 0부터 시작하므로 +1
+    const currentDay = currentDate.getDate();
+    
+    // 미래 날짜 체크
+    if (year > currentYear || 
+        (year === currentYear && month > currentMonth) || 
+        (year === currentYear && month === currentMonth && day > currentDay)) {
+        return {
+            isValid: false,
+            message: "생년월일은 미래 날짜가 될 수 없습니다."
+        };
+    }
+    
+    // 월 유효성 확인 (1-12)
+    if (month < 1 || month > 12) {
+        return {
+            isValid: false,
+            message: "생년월일의 월이 유효하지 않습니다."
+        };
+    }
+    
+    // 일 유효성 확인 (1-31, 월에 따라 다름)
+    const daysInMonth = [0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]; // 2월은 윤년 고려해서 최대 29일
+    if (day < 1 || day > daysInMonth[month]) {
+        return {
+            isValid: false,
+            message: "생년월일의 일이 유효하지 않습니다."
+        };
+    }
+    
+    return {
+        isValid: true,
+        message: "올바른 형식입니다."
+    };
+}, "생년월일 형식이 올바르지 않습니다. (YYMMDD)");
 
 	    // 닉네임 중복 검사 버튼 이벤트
 	    $("#checkNickname").click(function() {
@@ -350,6 +486,64 @@ button:hover {
 	        });
 	    });
 
+	    // 이메일 중복 검사 함수 
+	    $("#checkEmail").click(function() {
+    const email = $("#userEmail").val().trim();
+    const $errorDiv = $("#userEmailError");
+    const $successDiv = $("#userEmailSuccess");
+
+    if (email === "") {
+        $errorDiv.removeClass("success-msg").addClass("error-msg").text("이메일을 입력해주세요.").show();
+        $successDiv.hide();
+        return;
+    }
+
+    if (!emailRegex.test(email)) {
+        $errorDiv.removeClass("success-msg").addClass("error-msg").text("올바른 이메일 형식이 아닙니다.").show();
+        $successDiv.hide();
+        return;
+    }
+
+    if (email === "<%=loginUser.getEmail()%>") {
+        $successDiv.text("현재 사용 중인 이메일입니다.").show();
+        $errorDiv.hide();
+        validationState.emailChecked = true;
+        return;
+    }
+
+    // AJAX로 이메일 중복 검사
+    $.ajax({
+        type: "POST",
+        url: "/checkDuplicate.users",
+        data: { field: "EMAIL", value: email },
+        success: function(response) {
+            if (response === "duplicate") {
+                $errorDiv.removeClass("success-msg").addClass("error-msg").text("이미 사용 중인 이메일입니다.").show();
+                $successDiv.hide();
+                validationState.emailChecked = false;
+                validationState.userEmail = false;
+            } else {
+                $successDiv.text("사용 가능한 이메일입니다.").show();
+                $errorDiv.hide();
+                validationState.emailChecked = true;
+                validationState.userEmail = true;
+            }
+        },
+        error: function() {
+            $errorDiv.removeClass("success-msg").addClass("error-msg").text("서버 오류가 발생했습니다. 다시 시도해주세요.").show();
+            $successDiv.hide();
+            validationState.emailChecked = false;
+        }
+    });
+});
+	    
+	    // 이메일 입력 필드에 포커스 아웃 이벤트 핸들러 추가
+	    $("#userEmail").on("blur", function() {
+	        if (!isGoogleUser) { // 구글 사용자가 아닌 경우에만 이메일 중복 검사
+	            checkEmailDuplicate();
+	        }
+	    });
+
 	    // 닉네임 변경 감지
 	    $("#userNickname").on("input", function() {
 	        const value = $(this).val().trim();
@@ -363,10 +557,26 @@ button:hover {
 	            validationState.nicknameChecked = false;
 	        }
 	    });
+	    
+	    // 이메일 변경 감지
+	    $("#userEmail").on("input", function() {
+	        const value = $(this).val().trim();
+	        
+	        if (!isGoogleUser && value !== "<%=loginUser.getEmail()%>") {
+	            validationState.emailChecked = false;
+	        } else {
+	            validationState.emailChecked = true;
+	        }
+	    });
 
 	    // 페이지 로드 시 닉네임 초기 설정
 	    if ($("#userNickname").val().trim() === "<%=loginUser.getNickname()%>") {
 	        validationState.nicknameChecked = true;
+	    }
+	    
+	    // 페이지 로드 시 이메일 초기 설정
+	    if ($("#userEmail").val().trim() === "<%=loginUser.getEmail()%>" || isGoogleUser) {
+	        validationState.emailChecked = true;
 	    }
 
 	    // 폼 제출 시 최종 유효성 검사
@@ -374,6 +584,13 @@ button:hover {
 	        event.preventDefault();
 	        $("#errorMsg").hide();
 	        $("#successMsg").hide();
+	        
+	        if ($("#userRnum").val().trim() === "") {
+	            $("#userRnumError").removeClass("success-msg").addClass("error-msg")
+	                .text("생년월일은 필수 입력 항목입니다.").show();
+	            $("#errorMsg").text("생년월일은 필수 입력 항목입니다.").show();
+	            return;
+	        }
 
 	        // 닉네임 중복 검사 확인
 	        if ($("#userNickname").val().trim() !== "<%=loginUser.getNickname()%>" && !validationState.nicknameChecked) {
@@ -381,6 +598,14 @@ button:hover {
 	                .text("닉네임 중복 확인이 필요합니다.").show();
 	            $("#userNicknameSuccess").hide();
 	            $("#errorMsg").text("닉네임 중복 확인이 필요합니다.").show();
+	            return;
+	        }
+	        
+	        // 이메일 중복 검사 확인 (구글 사용자가 아닌 경우)
+	        if (!isGoogleUser && $("#userEmail").val().trim() !== "<%=loginUser.getEmail()%>" && !validationState.emailChecked) {
+	            $("#userEmailError").removeClass("success-msg").addClass("error-msg")
+	                .text("이메일 중복 확인이 필요합니다.").show();
+	            $("#errorMsg").text("이메일 중복 확인이 필요합니다.").show();
 	            return;
 	        }
 
@@ -413,7 +638,7 @@ button:hover {
 	        } else {
 	            // 일반 사용자는 모든 필드 검사
 	            for (let field in validationState) {
-	                if (field === 'nicknameChecked') continue;
+	                if (field === 'nicknameChecked' || field === 'emailChecked') continue;
 	                if (!validationState[field]) {
 	                    isValid = false;
 	                    break;
@@ -449,6 +674,12 @@ button:hover {
 	        });
 	    });
 	});
+	
+	function confirmWithdraw() {
+		  if(confirm("정말 탈퇴하시겠습니까?")) {
+		    document.getElementById("withdraw-frm").submit();
+		  }
+		}
 </script>
 
 </body>
