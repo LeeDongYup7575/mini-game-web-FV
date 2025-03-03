@@ -365,7 +365,7 @@
 										let memberCard = $("<div class='member-card'>");
 										let memberImage = $(
 												"<div class='member-image'>")
-												.html("이미지");
+												.html("👤");
 										let memberName = $(
 												"<div class='member-name'>")
 												.html(resp[i].nickname);

@@ -314,13 +314,9 @@ public class AdminController extends HttpServlet {
 				int seq = Integer.parseInt(request.getParameter("seq"));
 				System.out.println(seq);
 				int result = bdao.deleteBySeq(seq); // 게시글 삭제
-
-				if (result > 0) {
-					response.setStatus(HttpServletResponse.SC_OK); // 200 OK
-				} else {
-					response.setStatus(HttpServletResponse.SC_BAD_REQUEST); // 400 오류
-				}
-
+				String isdelete = (result>0) ? "SUCCESS" : "FAIL";
+				response.getWriter().append(g.toJson(isdelete));
+				response.getWriter().flush();
 			} catch (Exception e) {
 				e.printStackTrace();
 				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR); // 500 오류
