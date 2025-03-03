@@ -24,7 +24,7 @@
                 <img src="https://upload.wikimedia.org/wikipedia/commons/e/e9/Notion-logo.svg" alt="Notion Logo"
                     width="24" height="24">
             </a>
-            <a href="https://youtube.com" target="_blank" aria-label="YouTube">
+            <a href="https://youtu.be/VscctfquC3k" target="_blank" aria-label="YouTube">
                 <i class="fa-brands fa-youtube"></i>
             </a>
         </div>
