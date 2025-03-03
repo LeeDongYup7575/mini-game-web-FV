@@ -338,17 +338,22 @@ public class UsersDAO {
 		}
 	}
 
-	public boolean updatePassword(String id, String email, String newPassword) throws Exception { // 비밀번호 찾기 후 수정
-
-		String sql = "update users set pw = ? where id = ? and email = ?";
-		try (Connection con = this.getConnection(); PreparedStatement pstat = con.prepareStatement(sql)) {
-			pstat.setString(1, newPassword);
-			pstat.setString(2, id);
-			pstat.setString(3, email);
-
-			int result = pstat.executeUpdate();
-			return result > 0;
-		}
+	public boolean updatePassword(String id, String newPassword) throws Exception {
+	    String sql = "update users set pw = ? where id = ?";
+	    System.out.println("DAO: ID = " + id + ", 비밀번호 길이 = " + (newPassword != null ? newPassword.length() : "null"));
+	    
+	    try (Connection con = this.getConnection(); 
+	         PreparedStatement pstat = con.prepareStatement(sql)) {
+	        pstat.setString(1, newPassword);
+	        pstat.setString(2, id);
+	        
+	        int result = pstat.executeUpdate();
+	        System.out.println("쿼리 실행 결과: " + result);
+	        return result > 0;
+	    } catch (Exception e) {
+	        System.out.println("비밀번호 변경 오류: " + e.getMessage());
+	        throw e;
+	    }
 	}
 
 	public String getPassword(String id) throws Exception {

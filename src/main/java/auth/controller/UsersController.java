@@ -451,21 +451,20 @@ public class UsersController extends HttpServlet {
 					out.write("{\"match\": false}");
 				}
 				out.flush();
-			} else if (cmd.equals("/resetPw.users")) { // 비밀번호 찾기 후 수정
-				String id = request.getParameter("id");
-				String email = request.getParameter("email");
-				String newPassword = request.getParameter("newPassword");
-
-				// 비밀번호 변경
-				boolean isUpdated = dao.updatePassword(id, email, newPassword);
-
-				if (isUpdated) {
-					// 비밀번호 변경이 성공하면 홈페이지로 리디렉션
-					response.sendRedirect("/index.jsp");
-				} else {
-					// 실패 시 메시지 출력
-					response.getWriter().write("비밀번호 변경 실패");
-				}
+			} // 컨트롤러 부분 수정
+			else if (cmd.equals("/resetpw.users")) { // 비밀번호 찾기 후 수정
+			    String id = request.getParameter("userId");
+			    String newPassword = request.getParameter("newPassword"); // hashedPw에서 newPassword로 변경
+			    System.out.println("컨트롤러: " + id + " " + newPassword);
+			    
+			    // 비밀번호 변경
+			    boolean isUpdated = dao.updatePassword(id, newPassword);
+			    
+			    if (isUpdated) {
+			        response.getWriter().write("비밀번호 변경 성공");
+			    } else {
+			        response.getWriter().write("비밀번호 변경 실패");
+			    }
 			} else if (cmd.equals("/checkPassword.users")) {
 				HttpSession session = request.getSession();
 				String pw = request.getParameter("pw");
