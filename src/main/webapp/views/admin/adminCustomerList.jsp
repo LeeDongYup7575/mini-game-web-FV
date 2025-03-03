@@ -29,7 +29,9 @@
 	crossorigin="anonymous">
 <link href="/assets/css/adminCustomerList.css" rel="stylesheet">
 <!-- 폰트추가 위한 구글 폰트 -->
-        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
+<link
+	href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap"
+	rel="stylesheet">
 
 <style>
 </style>
@@ -157,21 +159,43 @@
 			let id = $(this).data("seq");
 			let isBan = $(this).html();
 			console.log(isBan)
-			if (confirm("정말 차단하시겠습니까?")) {
-				$.ajax({
-					url : "/banuser.admin",
-					data : {
-						userid:id, isban:isBan
-					},
-					success : function(resp) {
-						alert(resp);
-						getCustomerList();
-						getNewCustomerList();
-					},
-					error : function() {
-						alert("차단 중 오류 발생");
-					}
-				});
+			if (isBan == "UNBAN") {
+				if (confirm("정말 차단하시겠습니까?")) {
+					$.ajax({
+						url : "/banuser.admin",
+						data : {
+							userid : id,
+							isban : isBan
+						},
+						success : function(resp) {
+							alert(resp);
+							getCustomerList();
+							getNewCustomerList();
+						},
+						error : function() {
+							alert("차단 중 오류 발생");
+						}
+					});
+				}
+			} else {
+				if (confirm("정말 차단을 해제하겠습니까?")) {
+					$.ajax({
+						url : "/banuser.admin",
+						data : {
+							userid : id,
+							isban : isBan
+						},
+						success : function(resp) {
+							alert(resp);
+							getCustomerList();
+							getNewCustomerList();
+						},
+						error : function() {
+							alert("차단 중 오류 발생");
+						}
+					});
+				}
+				
 			}
 		});
 		// 삭제버튼 작동 펑션
@@ -226,22 +250,24 @@
 									let tr = $("<tr>");
 									let name = $("<td>").html(resp.name);
 									console.log(name);
-									let nickname = $("<td>").html(
-											resp.nickname);
+									let nickname = $("<td>")
+											.html(resp.nickname);
 									let joinDate = $("<td>").html(
 											formatDate(resp.joinDate));
 									let lastLogin = $("<td>").html(
 											formatDate(resp.lastLogin));
 
-									let admin = (resp.isAdmin > 0) ? "Admin" : "User";
+									let admin = (resp.isAdmin > 0) ? "Admin"
+											: "User";
 									let isAdmin = $("<td>").html(admin);
 									let isBan = (resp.warningCount > 0) ? "BAN"
 											: "UNBAN";
-									let banClass =(resp.warningCount > 0) ? "ban" : "unban";
+									let banClass = (resp.warningCount > 0) ? "ban"
+											: "unban";
 									let banbtn = $(
 											"<button class='"+ banClass +"' id = 'banbtn'>")
-											.attr("data-seq", resp.id)
-											.html(isBan);
+											.attr("data-seq", resp.id).html(
+													isBan);
 									let delbtn = $(
 											"<button class='delete' data-seq='"+ resp.id+"'>")
 											.html("delete");
@@ -249,10 +275,8 @@
 									bantd.append(banbtn);
 									let deltd = $("<td>");
 									deltd.append(delbtn);
-									tr
-											.append(name, nickname,
-													joinDate, lastLogin,
-													isAdmin, bantd, deltd);
+									tr.append(name, nickname, joinDate,
+											lastLogin, isAdmin, bantd, deltd);
 									$("#getuserlist").append(tr);
 
 								}
@@ -260,10 +284,9 @@
 		}
 		//날짜 변환 펑셔
 		function formatDate(timestamp) {
-		    return new Date(timestamp).toLocaleString("ko-KR");
+			return new Date(timestamp).toLocaleString("ko-KR");
 		}
 
-		
 		// 유저리스트 불러오는 펑션
 		function getCustomerList() {
 			$
@@ -295,11 +318,13 @@
 										let lastLogin = $("<td>").html(
 												formatDate(resp[i].lastLogin));
 
-										let admin = (resp[i].isAdmin > 0) ? "Admin" : "User";
+										let admin = (resp[i].isAdmin > 0) ? "Admin"
+												: "User";
 										let isAdmin = $("<td>").html(admin);
 										let isBan = (resp[i].warningCount > 0) ? "BAN"
 												: "UNBAN";
-										let banClass =(resp[i].warningCount > 0) ? "ban" : "unban";
+										let banClass = (resp[i].warningCount > 0) ? "ban"
+												: "unban";
 										let banbtn = $(
 												"<button class='"+ banClass +"' id = 'banbtn'>")
 												.attr("data-seq", resp[i].id)
@@ -311,10 +336,9 @@
 										bantd.append(banbtn);
 										let deltd = $("<td>");
 										deltd.append(delbtn);
-										tr
-												.append(name, nickname,
-														joinDate, lastLogin,
-														isAdmin, bantd, deltd);
+										tr.append(name, nickname, joinDate,
+												lastLogin, isAdmin, bantd,
+												deltd);
 										$("#getuserlist").append(tr);
 									}
 								}
