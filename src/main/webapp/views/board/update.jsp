@@ -81,19 +81,51 @@
      
      
      
-     // 첨부 파일 삭제 버튼 클릭 시 Ajax로 파일 삭제 요청
         $(document).on('click', '.delete-btn', function(){
             var fileSeq = $(this).data('file-seq');
-            var $listItem = $(this).closest('li');
+            // 삭제 버튼 클릭한 파일이 속한 파일 슬롯을 찾는다.
+            var $slot = $(this).closest('.file-slot');
+            // 파일 슬롯에 등록된 data-input 값(file1 또는 file2)을 확인
+            var inputName = $slot.data('input');
+            
             if(confirm("파일을 삭제하시겠습니까?")) {
                 $.ajax({
-                    url: '/delete.files',  // 파일 삭제를 처리할 백엔드 URL 
+                    url: '/delete.files',
                     type: 'POST',
                     data: { seq: fileSeq },
                     success: function(response) {
-                        // 삭제 성공 후 UI에서 파일 항목 제거
                         alert("파일이 삭제되었습니다.");
-                        $listItem.remove();
+                        
+                        // 동적으로 업로드 input HTML 생성
+                        var uploadHtml = '';
+                        if(inputName === 'file1'){
+                            uploadHtml = `
+                                <div class="file-upload">
+                                    <input type="file" name="file1" id="file1">
+                                    <span id="filename1"></span>
+                                    <br>
+                                    <img id="preview1" src="" alt="미리보기" style="display:none; max-width:200px; margin-top:10px;"/>
+                                </div>`;
+                        } else if(inputName === 'file2'){
+                            uploadHtml = `
+                                <div class="file-upload">
+                                    <input type="file" name="file2" id="file2">
+                                    <span id="filename2"></span>
+                                    <br>
+                                    <img id="preview2" src="" alt="미리보기" style="display:none; max-width:200px; margin-top:10px;"/>
+                                </div>`;
+                        }
+                        
+                        // 파일 슬롯의 제목(h4)은 유지하고, 기존 파일 정보를 업로드 input으로 교체한다.
+                        var slotTitle = $slot.find('h4').first().prop('outerHTML');
+                        $slot.html(slotTitle + uploadHtml);
+                        
+                        // 동적으로 생성한 파일 input에 파일 선택 이벤트 핸들러 재바인딩 (이미 존재하는 handleFileInput 함수 활용)
+                        if(inputName === 'file1'){
+                            handleFileInput('file1', 'filename1', 'preview1');
+                        } else if(inputName === 'file2'){
+                            handleFileInput('file2', 'filename2', 'preview2');
+                        }
                     },
                     error: function(xhr, status, error) {
                         alert("파일 삭제 중 오류가 발생하였습니다: " + error);
@@ -138,36 +170,52 @@
             	<h4> 제목 </h4>
             	<input type="text" id="title" name="title" placeholder="제목을 입력하세요" required maxlength="50">
    
-             	<!-- 첨부 파일 목록 표시 -->
-            	<div class="file-list">
-            		<h4>첨부된 파일</h4>
-            		<ul>
-            			<c:forEach var="file" items="${files}">
-            				<li>
-            					<a href="/download.file?seq=${file.seq}">${file.originName}</a>
-            					<!-- 삭제 버튼 추가 -->
-            					<button type="button" class="delete-btn" data-file-seq="${file.seq}">삭제</button>
-            				</li>
-            			</c:forEach>
-            		</ul>
-            	</div>
-	
-				<hr>
-				<!-- 새 파일 업로드 -->
-            	<div class="file-upload">
-	            	<div>
-                		<input type="file" name="file1" id="file1">
-                		<span id="filename1"></span>
-                		<br>
-                		<img id="preview1" src="" alt="미리보기" style="display:none; max-width:200px; margin-top:10px;"/>
-            		</div>
-            		<div>
-	            		<input type="file" name="file2" id="file2">
-                		<span id="filename2"></span>
-                		<br>
-                		<img id="preview2" src="" alt="미리보기" style="display:none; max-width:200px; margin-top:10px;"/>
-            		</div>
-				</div>
+             	<!-- 첨부 파일 영역 -->
+<div class="file-container">
+
+    <!-- 첨부파일 1 슬롯 -->
+    <div class="file-slot" data-input="file1">
+        <h4>첨부파일 1</h4>
+        <!-- 첨부파일이 있을 경우: files 리스트의 첫 번째 요소가 존재하면 -->
+        <c:if test="${not empty files and files.size() gt 0}">
+            <div class="file-list">
+                <a href="/download.file?seq=${files[0].seq}">${files[0].originName}</a>
+                <button type="button" class="delete-btn" data-file-seq="${files[0].seq}">삭제</button>
+            </div>
+        </c:if>
+        <!-- 첨부파일이 없을 경우 (혹은 존재하지 않는 경우) : 파일 업로드 input 보여주기 -->
+        <c:if test="${empty files or files.size() eq 0}">
+            <div class="file-upload">
+                <input type="file" name="file1" id="file1">
+                <span id="filename1"></span>
+                <br>
+                <img id="preview1" src="" alt="미리보기" style="display:none; max-width:200px; margin-top:10px;"/>
+            </div>
+        </c:if>
+    </div>
+
+    <!-- 첨부파일 2 슬롯 -->
+    <div class="file-slot" data-input="file2">
+        <h4>첨부파일 2</h4>
+        <!-- 첨부파일이 2개 이상 있을 경우: 두 번째 파일 존재하면 -->
+        <c:if test="${not empty files and files.size() gt 1}">
+            <div class="file-list">
+                <a href="/download.file?seq=${files[1].seq}">${files[1].originName}</a>
+                <button type="button" class="delete-btn" data-file-seq="${files[1].seq}">삭제</button>
+            </div>
+        </c:if>
+        <!-- 파일이 등록되어 있지 않으면 업로드 input 표시 -->
+        <c:if test="${empty files or files.size() lt 2}">
+            <div class="file-upload">
+                <input type="file" name="file2" id="file2">
+                <span id="filename2"></span>
+                <br>
+                <img id="preview2" src="" alt="미리보기" style="display:none; max-width:200px; margin-top:10px;"/>
+            </div>
+        </c:if>
+    </div>
+
+</div>
 					<hr>
 					<h4 id=contentTitle> 내용 </h4>
                 	<div class="content-input">
