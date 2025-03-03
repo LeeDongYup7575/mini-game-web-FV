@@ -52,7 +52,7 @@
 			loadRanking(4001);
 		})
 		function loadRanking(gameId) {
-		    $(".tabs button").css({"background-color":"#ffcc00","color":"#000"})
+		    $(".tabs button").css({"background-color":"#fff","color":"#000"})
             $("#"+gameId).css({"background-color":"#7D3CCC","color":"#fff"})
 			$
 					.ajax({

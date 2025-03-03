@@ -1,60 +1,173 @@
-body {
-	color: #ffffff;
-	background-color: #000000;
-	margin: 0;
-	padding: 0;
+/* CSS 커스텀 속성 정의 */
+:root {
+    --color-black: #000;
+    --color-gray: #868789;
+    --color-white: #fff;
+    --color-primary: #7D3CCC;
+    --color-secondary: #FF4F80;
+    --color-background: #121212;
+    --color-surface: rgba(255, 255, 255, 0.1);
+    --color-border: rgba(255, 255, 255, 0.2);
 }
 
+body {
+    color: var(--color-white);
+    background-color: var(--color-background);
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+}
+
+/* 탭 스타일링 */
 .tabs {
-	padding-top:130px;
-	display: flex;
-	justify-content: center;
-	flex-wrap: wrap;
-	margin-bottom: 30px;
-	gap: 10px;
+    padding-top: 130px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+    gap: 15px;
 }
 
 .tabs button {
-	background: #ffcc00;
-	border: none;
-	padding: 12px 25px;
-	color: #000000;
-	font-weight: bold;
-	cursor: pointer;
-	border-radius: 10px;
-	font-size: 1rem;
+    background: var(--color-surface);
+    border: 2px solid var(--color-primary);
+    padding: 12px 25px;
+    color: var(--color-white);
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
 }
 
 .tabs button:hover {
-	background: #ff5733;
-	transform: scale(1.05);
+    background: var(--color-primary);
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(125, 60, 204, 0.5);
 }
 
+/* 리더보드 컨테이너 스타일링 */
 .leaderboard-container {
-	background: rgba(255, 255, 255, 0.1);
-	padding: 20px;
-	border-radius: 15px;
-	max-width: 800px;
-	margin: 20px auto;
-	padding-bottom:30px;
+    background: var(--color-surface);
+    padding: 25px;
+    border-radius: 15px;
+    max-width: 800px;
+    margin: 20px auto;
+    padding-bottom: 30px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--color-primary);
 }
 
+.leaderboard-container h2 {
+    color: var(--color-secondary);
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 2rem;
+}
+
+/* 리더보드 테이블 스타일링 */
 .leaderboard {
-	width: 100%;
-	border-collapse: collapse;
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 10px;
+    overflow: hidden;
 }
 
 .leaderboard th, .leaderboard td {
-	padding: 12px;
-	text-align: left;
-	border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 15px;
+    text-align: center;
+    border-bottom: 1px solid var(--color-border);
 }
 
 .leaderboard th {
-	background: #ffcc00;
-	color: #000000;
+    background: var(--color-primary);
+    color: var(--color-white);
+    font-size: 1.1em;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.leaderboard tr:nth-child(even) {
+    background: rgba(125, 60, 204, 0.1);
 }
 
 .leaderboard tr:hover {
-	background: rgba(255, 255, 255, 0.2);
+    background: rgba(125, 60, 204, 0.2);
+    transform: scale(1.01);
+    transition: all 0.3s ease;
+}
+
+/* 상위 랭킹 강조 */
+.leaderboard tr:nth-child(1) td:first-child {
+    font-weight: bold;
+    font-size: 1.2em;
+}
+
+.leaderboard tr:nth-child(2) td:first-child {
+    font-weight: bold;
+}
+
+.leaderboard tr:nth-child(3) td:first-child {
+    font-weight: bold;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .tabs {
+        padding-top: 100px;
+        gap: 10px;
+    }
+    
+    .tabs button {
+        padding: 10px 15px;
+        font-size: 0.9rem;
+        flex: 1 1 40%;
+    }
+    
+    .leaderboard-container {
+        margin: 10px 15px;
+        padding: 15px;
+    }
+    
+    .leaderboard-container h2 {
+        font-size: 1.5rem;
+    }
+    
+    .leaderboard th, .leaderboard td {
+        padding: 10px 8px;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .tabs {
+        padding-top: 80px;
+    }
+    
+    .tabs button {
+        flex: 1 1 100%;
+        font-size: 0.85rem;
+    }
+    
+    .leaderboard th, .leaderboard td {
+        padding: 8px 5px;
+        font-size: 0.8rem;
+    }
+    
+    .leaderboard-container h2 {
+        font-size: 1.3rem;
+    }
+}
+
+/* 스코어 강조 효과 */
+.leaderboard td:nth-child(3) {
+    font-weight: bold;
+    color: var(--color-secondary);
+}
+
+/* 테이블 내용이 없을 때 스타일 */
+.leaderboard tr td[colspan="3"] {
+    text-align: center;
+    padding: 30px;
+    color: var(--color-gray);
 }
