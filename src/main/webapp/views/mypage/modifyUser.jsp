@@ -371,69 +371,43 @@ button:hover {
 	    validateInput("#userNickname", nicknameRegex, "닉네임은 한글, 영문, 숫자로 1~9자여야 합니다.");
 	    validateInput("#userEmail", emailRegex, "올바른 이메일 형식이 아닙니다.");
 	    validateInput("#userPhone", phoneRegex, "전화번호 형식이 올바르지 않습니다.");
-	 // 생년월일에 대한 수정된 유효성 검사
-	    // 생년월일에 대한 수정된 유효성 검사
-validateInput("#userRnum", function(value) {
-    // 빈 값이면 유효하지 않음 (필수 필드)
-    if (value === "") {
-        return {
-            isValid: false,
-            message: "생년월일은 필수 입력 항목입니다."
-        };
-    }
-    
-    // 6자리 숫자인지 확인
-    const rnumRegex = /^\d{6}$/;
-    if (!rnumRegex.test(value)) {
-        return {
-            isValid: false,
-            message: "생년월일은 6자리 숫자로 입력해주세요. (YYMMDD)"
-        };
-    }
-    
-    // 유효한 생년월일인지 추가 검사
-    const year = parseInt(value.substring(0, 2));
-    const month = parseInt(value.substring(2, 4));
-    const day = parseInt(value.substring(4, 6));
-    
-    // 현재 날짜와 비교
-    const currentDate = new Date();
-    const currentYear = currentDate.getFullYear() % 100; // 현재 연도의 마지막 두 자리
-    const currentMonth = currentDate.getMonth() + 1; // 0부터 시작하므로 +1
-    const currentDay = currentDate.getDate();
-    
-    // 미래 날짜 체크
-    if (year > currentYear || 
-        (year === currentYear && month > currentMonth) || 
-        (year === currentYear && month === currentMonth && day > currentDay)) {
-        return {
-            isValid: false,
-            message: "생년월일은 미래 날짜가 될 수 없습니다."
-        };
-    }
-    
-    // 월 유효성 확인 (1-12)
-    if (month < 1 || month > 12) {
-        return {
-            isValid: false,
-            message: "생년월일의 월이 유효하지 않습니다."
-        };
-    }
-    
-    // 일 유효성 확인 (1-31, 월에 따라 다름)
-    const daysInMonth = [0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]; // 2월은 윤년 고려해서 최대 29일
-    if (day < 1 || day > daysInMonth[month]) {
-        return {
-            isValid: false,
-            message: "생년월일의 일이 유효하지 않습니다."
-        };
-    }
-    
-    return {
-        isValid: true,
-        message: "올바른 형식입니다."
-    };
-}, "생년월일 형식이 올바르지 않습니다. (YYMMDD)");
+
+	    validateInput("#rnum", rnumRegex, "생년월일은 6자리 숫자여야 합니다.", "rnum");
+
+	    // 생년월일 유효성 추가 검사 (실제 날짜 확인)
+	    $("#rnum").on("blur", function() {
+	        let value = $(this).val().trim();
+	        let errorDiv = $("#rnumError");
+	        
+	        if (value === "" || !rnumRegex.test(value)) {
+	            updateValidationState("rnum", false);
+	            return; // 기본 정규식 검사에서 처리
+	        }
+	        
+	        // 실제 유효한 날짜인지 확인
+	        try {
+	        	let yearPrefix = value.substring(0, 2);
+	        	let year = parseInt("20" + yearPrefix);
+	        	if (year > new Date().getFullYear()) {
+	        	    year = parseInt("19" + yearPrefix);
+	        	}
+
+	            let month = parseInt(value.substring(2, 4)) - 1; // JS는 월이 0부터 시작
+	            let day = parseInt(value.substring(4, 6));
+	            
+	            let date = new Date(year, month, day);
+	            if (date.getFullYear() !== year || date.getMonth() !== month || date.getDate() !== day) {
+	                errorDiv.removeClass("success-msg").addClass("error-msg").text("유효하지 않은 날짜입니다.").show();
+	                updateValidationState("rnum", false);
+	            } else {
+	                updateValidationState("rnum", true);
+	            }
+
+	        } catch (e) {
+	            errorDiv.removeClass("success-msg").addClass("error-msg").text("유효하지 않은 날짜입니다.").show();
+	            updateValidationState("rnum", false);
+	        }
+	    });
 
 	    // 닉네임 중복 검사 버튼 이벤트
 	    $("#checkNickname").click(function() {
