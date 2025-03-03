@@ -34,10 +34,12 @@ public class AdminController extends HttpServlet {
 		BoardDAO bdao = BoardDAO.getInstance();
 		BanDAO bandao = BanDAO.getInstance();
 		Gson g = new Gson();
+		// ip로 접속시 직접 URL 차단에 예외할 서버 ip
+		String ip = request.getLocalAddr();
 		
 		// ✅ 직접 URL 입력 차단 (Referer 검사)
 		String referer = request.getHeader("referer");
-		if (referer == null || !referer.contains("localhost")) { 
+		if (referer == null || (!referer.contains("localhost")) && (!referer.contains(ip))) { 
 			System.out.println("🚨 직접 URL 입력 차단: " + request.getRequestURI());
 			response.sendRedirect("/includes/error403.jsp");
 			return;
