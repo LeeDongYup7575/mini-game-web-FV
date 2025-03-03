@@ -186,7 +186,7 @@
         <footer class="sticky-footer">
           <div class="container">
             <div class="text-center">
-              <span>Copyright &copy; Your Website 2021</span>
+              <span>© 2025 TechX. All rights reserved.</span>
             </div>
           </div>
         </footer>
