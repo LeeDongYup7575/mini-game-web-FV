@@ -10,22 +10,55 @@
 	integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
 	crossorigin="anonymous"></script>
 <link rel="stylesheet" href="/assets/css/findmyid.css">	
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 </head>
 <body>
-    <div class="container1">
-        <div class="title">
-        	<a href="/">
-            	<img src="/assets/img/logoW.png" alt="">
-            </a>
-        </div>
+	<div class="container">
 
-        <div class="subtitle">FIND MY ID</div>
-        <form id="findIdForm" action="/findId.users" method="post">
-            <input type="text" class="id" name="name" placeholder="이름 입력">
-            <input type="text" class="pw" name="email" placeholder="이메일 주소 입력">
-            <button type="submit" class="signIn">FIND MY ID</button>
-        </form>
+		<div class="left">
+			<div class="logo">
+				<a href="/index.jsp"> <img src="/assets/img/bigLogo.png" alt="">
+				</a>
+			</div>
+			<div class="signin">FIND MY ID</div>
+
+			<form id="findIdForm" action="/findId.users" method="post">
+				<div class="input-member">
+					<input type="text" class="id" name="name" placeholder=" 이름 입력">
+					<input type="text" class="pw" name="email" placeholder=" 이메일 주소 입력">
+				</div>
+			
+
+			<div class="signin-btn">
+				<button type="submit" class="login">아이디 찾기</button>
+			</div>
+			</form>
+
+			<div class="membership">
+
+				<a href="/views/auth/agreement.jsp">
+					<div class="join-membership">회원가입</div>
+				</a> <a href="/views/auth/findmyid.jsp">
+					<div class="find-id">아이디 찾기</div>
+				</a> <a href="/views/auth/findmypw.jsp">
+					<div class="find-pw">비밀번호 찾기</div>
+				</a>
+
+			</div>
+
+		</div>
+
+		<div class="right">
+			<div class="sign-img">
+				<img src="/assets/img/auth.jpg" class="sign"> <img
+					src="/assets/img/bigLogo.png" class="logo2">
+			</div>
+			
+
+		</div>
+	</div>
+
 
         <script>
             // 폼 제출 시 서버로 요청을 보내고, 결과를 처리하는 함수
@@ -113,20 +146,6 @@
             });
         </script>
 
-        <div class="container2">
-            <img src="/assets/img/auth.jpg" alt="" class="sing"> <img src="/assets/img/logoW.png" alt="" class="logo">
-        </div>
-        
-        <a href="/views/auth/login.jsp">
-        	<div class="to-login">로그인</div>
-       	</a>
-		<a href="/views/auth/agreement.jsp">
-        	<div class="join_membership">회원가입</div>
-       	</a>
-        <a href="/views/auth/findmypw.jsp">
-            <div class="findPw">비밀번호 찾기</div>
-        </a>
-    </div>
-</body>
+
 </body>
 </html>

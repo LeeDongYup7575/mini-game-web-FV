@@ -1,4 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<% 
+    String userId = request.getParameter("id"); // URL에서 id 파라미터 받기
+    request.setAttribute("userId", userId); // request에 저장 (JSP 표현식에서 사용)
+%>
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -140,7 +145,8 @@ $(document).ready(function() {
 
   // 비밀번호 변경 버튼 클릭 이벤트
   $("#resetPwBtn").on("click", function() {
-    let userId = $("input[name='userId']").val();
+	let userId = $("input[name='userId']").val();
+    /* let email = $("input[name='email'']").val(); */
     let newPassword = $("#newPassword").val().trim();
     let confirmPassword = $("#confirmPassword").val().trim();
 
@@ -159,16 +165,19 @@ $(document).ready(function() {
 
     // 비밀번호 해싱
     let hashedPw = CryptoJS.SHA256(newPassword).toString();
+    
+    console.log(hashedPw);
 
-    // AJAX 요청
+ // AJAX 요청
     $.ajax({
       type: "POST",
-      url: "resetpw.users",
+      url: "/resetpw.users", 
       data: { 
         userId: userId, 
         newPassword: hashedPw 
       },
       success: function(response) {
+        console.log("서버 응답:", response); 
         if (response.trim() === "비밀번호 변경 실패") {
           alert("비밀번호 변경에 실패했습니다.");
         } else {
@@ -177,10 +186,12 @@ $(document).ready(function() {
           window.close();
         }
       },
-      error: function() {
+      error: function(xhr, status, error) {
+        console.error("에러 상태:", status, "에러 내용:", error);
         alert("서버 오류가 발생했습니다. 다시 시도해주세요.");
       }
     });
+ 
   });
 });
 </script>

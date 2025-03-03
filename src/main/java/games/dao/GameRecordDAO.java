@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,6 +17,7 @@ import javax.sql.DataSource;
 import games.dto.GameRankingDTO;
 import games.dto.GameRecordDTO;
 import games.dto.GameRecordRankingDTO;
+import games.dto.GamesDTO;
 
 public class GameRecordDAO {
 	// 1. 싱글톤 패턴
@@ -150,6 +152,31 @@ public class GameRecordDAO {
 		}
 
 		return highestScores;
+	}
+	
+	
+	//마이페이지 최근 게임 목록
+	public List<GamesDTO> getRecentPlayedGames(String userId) throws Exception {
+		
+		String sql = "select g.gamename,p.PLAYTIME from(select playtime, gameid from gamerecord where userid=? order by 1 desc) p join games g on g.seq = p.gameid where rownum = 1";
+		
+		try (Connection con = this.getConnection(); PreparedStatement pstat = con.prepareStatement(sql)) {
+			pstat.setString(1, userId);
+			
+			try (ResultSet rs = pstat.executeQuery()) {
+				List<GamesDTO> recentPlayGame = new ArrayList<>();
+				
+				while (rs.next()) { // 여러 개의 결과 처리 가능하도록 수정
+					String gameName = rs.getString("gamename");
+					Timestamp lastPlayTime = rs.getTimestamp("playtime");
+					
+					GamesDTO gdto = new GamesDTO(0,gameName,lastPlayTime,"");
+					recentPlayGame.add(gdto);
+					
+				}
+				return recentPlayGame;
+			}
+		}
 	}
 
 	/**

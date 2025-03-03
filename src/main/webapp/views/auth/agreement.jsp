@@ -19,21 +19,23 @@
 }
 
 body {
-	background-color: #f7f7f7;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	min-height: 100vh;
+    background-color: #f7f7f7;
+    display: flex;
+    flex-direction: column; /* 요소들을 수직으로 정렬 */
+    align-items: center; /* 수평 중앙 정렬 */
+    min-height: 100vh;
+    justify-content: flex-start; /* 위쪽에 배치 */
+    padding-top: 20px; /* 최상단에 너무 붙지 않도록 여백 추가 */
 }
 
 .container {
 	position: relative;
-	top: 50px;
 	background-color: #fff;
 	border-radius: 10px;
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 	padding: 30px;
 	width: 800px;
+	
 }
 
 .title1, .title2 {
@@ -104,10 +106,8 @@ button:last-of-type:hover {
 }
 
 .title {
-	position: absolute;
-	height: 300px;
+	height: 200px;
 	width: 400px;
-	top: 0px;
 }
 
 .title img {
@@ -212,7 +212,7 @@ button:last-of-type:hover {
 			if (terms1.checked && terms2.checked) {
 				alert('회원가입 창으로 이동합니다.');
 				// 다음 단계로 넘어갈 페이지
-				window.location.href = 'signup.jsp';
+				window.location.href = '/tosignup.users';
 			} else {
 				alert('모든 필수 약관에 동의해야 합니다.');
 			}
