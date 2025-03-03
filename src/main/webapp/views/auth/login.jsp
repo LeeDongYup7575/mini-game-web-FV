@@ -108,9 +108,7 @@
 		});
 
 		let errorMessage = "<c:out value='${errorMessage}'/>";
-		if (errorMessage != "") {
-			alert(errorMessage);
-		}
+		
 	});
 
 	$(document).ready(function() {
