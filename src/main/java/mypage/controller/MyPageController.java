@@ -26,10 +26,10 @@ public class MyPageController extends HttpServlet {
 
 		request.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html; charset=UTF-8");
-
+		String ip = request.getLocalAddr();
 		// 직접 url 입력차단 (Referer 검사)
 		String referer = request.getHeader("referer");
-		if (referer == null || !referer.contains("localhost")) {
+		if (referer == null || (!referer.contains("localhost") && !referer.contains(ip))) {
 			System.out.println("🚨 직접 URL 입력 차단: " + request.getRequestURI());
 			response.sendRedirect("/includes/error403.jsp");
 			return;

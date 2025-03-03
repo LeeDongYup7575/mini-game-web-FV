@@ -32,11 +32,11 @@ public class JspAccessFilter implements Filter {
 
         String requestURI = req.getRequestURI();
         String referer = req.getHeader("referer");
-        // admin, mypage 폴더 안에 jsp에 직접 접근시 404페이지로 리턴
-        if (requestURI.matches(".*/admin/.*\\.jsp$") || requestURI.matches(".*/mypage/.*\\.jsp$")&& (referer == null || referer.isEmpty())&& !requestURI.endsWith("/mypage/modifyUser.jsp") ) {
+        // admin, mypage 폴더 안에 jsp에 직접 접근시 403페이지로 리턴
+        if (requestURI.matches(".*/admin/.*\\.jsp$") || requestURI.matches(".*/mypage/.*\\.jsp$")&& (referer == null || referer.isEmpty())&& !requestURI.endsWith("/mypage/modifyUser.jsp") ||requestURI.endsWith("/auth/signup.jsp")) {
             System.out.println("🚨 차단된 관리자 JSP 접근: " + requestURI);
-           //404 페이지로 보내기
-            req.getRequestDispatcher("/includes/error404.jsp").forward(request, response);
+           //403 페이지로 보내기
+            req.getRequestDispatcher("/includes/error403.jsp").forward(request, response);
             return;
         } else {
         	
