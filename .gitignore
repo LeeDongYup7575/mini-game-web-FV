@@ -139,3 +139,8 @@ $RECYCLE.BIN/
 
 # End of https://www.toptal.com/developers/gitignore/api/windows,eclipse,java,git
 /build/
+
+config.properties
+*.properties
+**/WEB-INF/classes/config.properties
+
