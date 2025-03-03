@@ -198,8 +198,10 @@
 		
 		// 한번에 하나의 댓글 수정폼만 열리도록 함.
 		$(".update-reply-inbox").closest(".reply").each(function(){
- 			// 각 댓글에 대해 검사 -> $(this).data("originalReply")가 존재하면 수정 폼 열려있다는 의미 -> 기존 댓글로 복원 (수정 폼 닫기)
  			// $(this).data("originalReply") -> 수정 버튼 누를 시 기존 댓글 담아놓음
+ 			// 각 댓글에 대해 검사 -> $(this).data("originalReply")가 존재하면 인박스 열려있는 상태
+ 			// -> 기존 댓글로 복원 (수정 폼 닫기)
+ 			
 	        let originalReply = $(this).data("originalReply");
 	        if (originalReply) {
 	            $(this).html(originalReply);

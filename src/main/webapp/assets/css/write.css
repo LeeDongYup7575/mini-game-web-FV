@@ -56,7 +56,7 @@ body {
 }
 
 .title-input {
-	margin-bottom: 20px;
+	margin-bottom: 5px;
 }
 
 .title-input input {
@@ -75,6 +75,7 @@ body {
 .content-input {
 	border: 1px solid #ddd;
 	border-radius: 4px;
+	margin-top: 5px;
 }
 
 .note-editor {
