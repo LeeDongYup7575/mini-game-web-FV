@@ -29,7 +29,7 @@ public class MyPageController extends HttpServlet {
 		String ip = request.getLocalAddr();
 		// 직접 url 입력차단 (Referer 검사)
 		String referer = request.getHeader("referer");
-		if (referer == null || (!referer.contains("localhost") && !referer.contains(ip))) {
+		if (referer == null || (!referer.contains("localhost") && !referer.contains(ip) && (!referer.contains("http://techx.ddns.net:40003/")))) {
 			System.out.println("🚨 직접 URL 입력 차단: " + request.getRequestURI());
 			response.sendRedirect("/includes/error403.jsp");
 			return;

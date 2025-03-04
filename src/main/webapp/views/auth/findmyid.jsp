@@ -75,7 +75,7 @@
                     success: function(response) {
                         if (response.id) {
                             // 아이디를 찾은 경우, 새 창을 열어 결과 표시
-                            var newWindow = window.open("", "_blank", "width=500,height=300,top=250,left=500");
+                            var newWindow = window.open("", "_blank", "width=500,height=300,top=250,left=250");
                             
                             var newDocument = newWindow.document;
                             newDocument.write(`
