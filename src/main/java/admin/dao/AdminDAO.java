@@ -72,14 +72,15 @@ public class AdminDAO {
 
 		String sql = "SELECT g.seq, COALESCE(COUNT(r.gameid), 0) FROM GAMES g LEFT JOIN GAMERECORD r ON g.seq = r.gameid GROUP BY g.seq ORDER BY g.seq";
 
-		Connection con = this.getConnection();
-		PreparedStatement pstat = con.prepareStatement(sql);
-		ResultSet rs = pstat.executeQuery();
+		try (Connection con = this.getConnection();
+				PreparedStatement pstat = con.prepareStatement(sql);
+				ResultSet rs = pstat.executeQuery();) {
 
-		while (rs.next()) {
-			barChartData.add(rs.getString(2));
+			while (rs.next()) {
+				barChartData.add(rs.getString(2));
+			}
+			return barChartData;
 		}
-		return barChartData;
 	}
 
 	public int getTodayVisit() throws Exception {
@@ -155,12 +156,11 @@ public class AdminDAO {
 
 				while (rs.next()) {
 					UsersDTO user = new UsersDTO(rs.getString("id"), rs.getString("pw"), rs.getString("nickname"),
-							rs.getString("name"), rs.getString("phone"), rs.getString("email"),
-							rs.getString("rnum"), rs.getTimestamp("joinDate"), rs.getInt("warningCount"),
-							rs.getInt("withdraw"), rs.getInt("status"), rs.getInt("isAdmin"),
-							rs.getTimestamp("lastLogin"));
+							rs.getString("name"), rs.getString("phone"), rs.getString("email"), rs.getString("rnum"),
+							rs.getTimestamp("joinDate"), rs.getInt("warningCount"), rs.getInt("withdraw"),
+							rs.getInt("status"), rs.getInt("isAdmin"), rs.getTimestamp("lastLogin"));
 					totalUserList.add(user);
-					}
+				}
 				return totalUserList;
 			}
 		}
