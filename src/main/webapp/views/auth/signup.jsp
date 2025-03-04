@@ -57,11 +57,15 @@
     background-color: #d4edda;
     border: 1px solid #c3e6cb;
 }
+
+.error-msg{
+	color: red;
+	
+}
 </style>
 
 <script>
 $(document).ready(function () {
-    /* const idRegex = /^[a-zA-Z][a-zA-Z0-9]{5,14}$/; */
     const idRegex = /^(?!google_)[a-zA-Z][a-zA-Z0-9]{5,14}$/;
     const pwRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*]).{8,}$/;
     const nicknameRegex = /^[\w가-힣]{1,9}$/;
